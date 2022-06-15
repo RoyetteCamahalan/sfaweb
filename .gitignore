@@ -14,4 +14,4 @@ packages/
 *.vs
 SimpleFFO/images/*/
 SimpleFFO/Web.config
-*.csproj
+README.md
