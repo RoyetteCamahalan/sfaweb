@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="43a8a1f642f0415cb9c85f6296e06b39" Name="Diagram1" ZoomLevel="64">
+        <EntityTypeShape EntityType="simple_models.supplier" Width="1.875" PointX="23.75" PointY="0.5" />
+        <EntityTypeShape EntityType="simple_models.institutiontype" Width="1.5" PointX="5.625" PointY="0.5" />
+        <EntityTypeShape EntityType="simple_models.product" Width="1.5" PointX="31.5" PointY="18" />
+        <EntityTypeShape EntityType="simple_models.employee" Width="1.5" PointX="8" PointY="13.625" />
+        <EntityTypeShape EntityType="simple_models.doctorclass" Width="1.5" PointX="3.25" PointY="5.75" />
+        <EntityTypeShape EntityType="simple_models.doctor" Width="1.5" PointX="3.25" PointY="0.5" />
+        <EntityTypeShape EntityType="simple_models.institutiondoctormap" Width="1.5" PointX="0.5" PointY="2.875" />
+        <EntityTypeShape EntityType="simple_models.institution" Width="1.5" PointX="5.625" PointY="3.875" />
+        <AssociationConnector Association="simple_models.institutioninstitutiondoctormap" />
+        <AssociationConnector Association="simple_models.doctorinstitutiondoctormap" />
+        <EntityTypeShape EntityType="simple_models.activity" Width="1.5" PointX="24.125" PointY="6.5" />
+        <EntityTypeShape EntityType="simple_models.attendee" Width="1.5" PointX="24.125" PointY="9.625" />
+        <EntityTypeShape EntityType="simple_models.practivity" Width="1.5" PointX="21" PointY="7.75" />
+        <EntityTypeShape EntityType="simple_models.practivitybudget" Width="1.5" PointX="24.125" PointY="12.25" />
+        <EntityTypeShape EntityType="simple_models.practivityoutcome" Width="1.5" PointX="21" PointY="13.25" />
+        <AssociationConnector Association="simple_models.activitypractivity" />
+        <AssociationConnector Association="simple_models.practivityattendee" />
+        <AssociationConnector Association="simple_models.practivitypractivitybudget" />
+        <AssociationConnector Association="simple_models.practivitypractivityoutcome" />
+        <AssociationConnector Association="simple_models.productpractivityoutcome" />
+        <AssociationConnector Association="simple_models.institutiontypeinstitution" />
+        <AssociationConnector Association="simple_models.doctorclassinstitutiondoctormap" />
+        <EntityTypeShape EntityType="simple_models.specialization" Width="1.5" PointX="0.5" PointY="0.5" />
+        <EntityTypeShape EntityType="simple_models.budgettype" Width="1.5" PointX="26.375" PointY="12.25" />
+        <EntityTypeShape EntityType="simple_models.tieupproduct" Width="1.5" PointX="23" PointY="18.25" />
+        <EntityTypeShape EntityType="simple_models.tieup" Width="1.5" PointX="20.875" PointY="18.25" />
+        <AssociationConnector Association="simple_models.specializationdoctor" />
+        <EntityTypeShape EntityType="simple_models.employeeleave" Width="1.5" PointX="5.75" PointY="34.5" />
+        <EntityTypeShape EntityType="simple_models.leavetype" Width="1.5" PointX="3.875" PointY="34.5" />
+        <AssociationConnector Association="simple_models.leavetypeemployeeleave" />
+        <EntityTypeShape EntityType="simple_models.branch" Width="1.5" PointX="0.5" PointY="14.625" />
+        <AssociationConnector Association="simple_models.branchemployee" />
+        <EntityTypeShape EntityType="simple_models.itemcategory" Width="1.5" PointX="33.875" PointY="18" />
+        <AssociationConnector Association="simple_models.itemcategoryproduct" />
+        <EntityTypeShape EntityType="simple_models.packaging" Width="1.5" PointX="33.875" PointY="20.125" />
+        <AssociationConnector Association="simple_models.packagingproduct" />
+        <AssociationConnector Association="simple_models.tieuptieupproduct" />
+        <AssociationConnector Association="simple_models.producttieupproduct" />
+        <AssociationConnector Association="simple_models.institutionpractivity" />
+        <AssociationConnector Association="simple_models.doctorpractivity" />
+        <EntityTypeShape EntityType="simple_models.preference" Width="1.5" PointX="40.625" PointY="9.625" />
+        <EntityTypeShape EntityType="simple_models.requeststatustrail" Width="1.5" PointX="40.625" PointY="11.875" />
+        <EntityTypeShape EntityType="simple_models.cycleset" Width="1.5" PointX="41.75" PointY="6.25" />
+        <EntityTypeShape EntityType="simple_models.cycleday" Width="1.5" PointX="44.25" PointY="6.5" />
+        <AssociationConnector Association="simple_models.cyclesetcycleday" />
+        <EntityTypeShape EntityType="simple_models.companyvehicle" Width="1.5" PointX="29.75" PointY="0.5" />
+        <EntityTypeShape EntityType="simple_models.warehouse" Width="1.5" PointX="11.25" PointY="13.75" />
+        <AssociationConnector Association="simple_models.warehouseemployee" />
+        <AssociationConnector Association="simple_models.warehouseinstitution" />
+        <AssociationConnector Association="simple_models.companyvehiclewarehouse" />
+        <EntityTypeShape EntityType="simple_models.expensereportdetail" Width="2" PointX="23.75" PointY="25.375" />
+        <EntityTypeShape EntityType="simple_models.expensereportmiscellaneou" Width="2" PointX="23.75" PointY="30.125" />
+        <EntityTypeShape EntityType="simple_models.expensereport" Width="1.5" PointX="20.875" PointY="26.75" />
+        <EntityTypeShape EntityType="simple_models.miscexpensecode" Width="1.5" PointX="26.75" PointY="29" />
+        <EntityTypeShape EntityType="simple_models.transportationtype" Width="1.5" PointX="26.75" PointY="25.375" />
+        <AssociationConnector Association="simple_models.expensereportexpensereportdetail" />
+        <AssociationConnector Association="simple_models.expensereportexpensereportmiscellaneou" />
+        <AssociationConnector Association="simple_models.miscexpensecodeexpensereportmiscellaneou" />
+        <AssociationConnector Association="simple_models.transportationtypeexpensereportdetail" />
+        <EntityTypeShape EntityType="simple_models.approvaltree" Width="1.5" PointX="0.5" PointY="22.375" />
+        <EntityTypeShape EntityType="simple_models.module" Width="1.5" PointX="8.375" PointY="1" />
+        <AssociationConnector Association="simple_models.moduleapprovaltree" />
+        <AssociationConnector Association="simple_models.employeeapprovaltree" />
+        <EntityTypeShape EntityType="simple_models.statustrail" Width="1.5" PointX="0.5" PointY="25.5" />
+        <AssociationConnector Association="simple_models.warehouseexpensereport" />
+        <AssociationConnector Association="simple_models.employeestatustrail" />
+        <AssociationConnector Association="simple_models.warehousepractivity" />
+        <AssociationConnector Association="simple_models.warehousetieup" />
+        <AssociationConnector Association="simple_models.employeeemployeeleave" />
+        <EntityTypeShape EntityType="simple_models.fundliquidation" Width="1.5" PointX="13.75" PointY="34.5" />
+        <EntityTypeShape EntityType="simple_models.fundrequest" Width="1.5" PointX="8.5" PointY="34.625" />
+        <AssociationConnector Association="simple_models.warehousefundrequest" />
+        <AssociationConnector Association="simple_models.warehousefundliquidation" />
+        <EntityTypeShape EntityType="simple_models.vehiclerepairdetail" Width="1.5" PointX="21.75" PointY="0.5" />
+        <EntityTypeShape EntityType="simple_models.vehiclerepair" Width="1.5" PointX="19.75" PointY="0.5" />
+        <AssociationConnector Association="simple_models.suppliervehiclerepairdetail" />
+        <AssociationConnector Association="simple_models.vehiclerepairvehiclerepairdetail" />
+        <AssociationConnector Association="simple_models.warehousevehiclerepair" />
+        <EntityTypeShape EntityType="simple_models.employeetype" Width="1.5" PointX="0.5" PointY="19.375" />
+        <EntityTypeShape EntityType="simple_models.userpriv" Width="1.5" PointX="0.5" PointY="11.625" />
+        <AssociationConnector Association="simple_models.employeetypeemployee" />
+        <AssociationConnector Association="simple_models.branchwarehouse" />
+        <EntityTypeShape EntityType="simple_models.useraccount" Width="1.5" PointX="0.5" PointY="28.625" />
+        <AssociationConnector Association="simple_models.employeeuseraccount" />
+        <AssociationConnector Association="simple_models.useraccountuserpriv" />
+        <AssociationConnector Association="simple_models.branchsupplier" />
+        <EntityTypeShape EntityType="simple_models.salaryloan" Width="1.5" PointX="40.625" PointY="17.375" />
+        <AssociationConnector Association="simple_models.employeesalaryloan" />
+        <EntityTypeShape EntityType="simple_models.callnote" Width="1.5" PointX="29.25" PointY="30.875" />
+        <EntityTypeShape EntityType="simple_models.call" Width="1.5" PointX="36.75" PointY="27" />
+        <EntityTypeShape EntityType="simple_models.missedcall" Width="1.5" PointX="39.25" PointY="22.875" />
+        <EntityTypeShape EntityType="simple_models.plandetail" Width="1.5" PointX="39.25" PointY="25.875" />
+        <EntityTypeShape EntityType="simple_models.plan" Width="1.5" PointX="32.25" PointY="32.875" />
+        <EntityTypeShape EntityType="simple_models.rescheduledcall" Width="1.5" PointX="39.25" PointY="29.875" />
+        <EntityTypeShape EntityType="simple_models.signature" Width="1.5" PointX="34.25" PointY="32.875" />
+        <EntityTypeShape EntityType="simple_models.reason" Width="1.5" PointX="41.25" PointY="22.875" />
+        <EntityTypeShape EntityType="simple_models.territory" Width="1.5" PointX="41.25" PointY="26.875" />
+        <AssociationConnector Association="simple_models.institutiondoctormapcall" />
+        <AssociationConnector Association="simple_models.callsignature" />
+        <AssociationConnector Association="simple_models.callcallnote" />
+        <EntityTypeShape EntityType="simple_models.systemsubmodule" Width="1.5" PointX="0.5" PointY="9.625" />
+        <EntityTypeShape EntityType="simple_models.usersubpriv" Width="1.5" PointX="0.5" PointY="32.75" />
+        <AssociationConnector Association="simple_models.useraccountusersubpriv" />
+        <EntityTypeShape EntityType="simple_models.adminreport" Width="1.5" PointX="32.375" PointY="0.5" />
+        <EntityTypeShape EntityType="simple_models.userlog" Width="1.5" PointX="8.375" PointY="5.75" />
+        <EntityTypeShape EntityType="simple_models.appversion" Width="1.5" PointX="8.375" PointY="9.75" />
+        <EntityTypeShape EntityType="simple_models.callevalnote" Width="1.5" PointX="11" PointY="0.75" />
+        <EntityTypeShape EntityType="simple_models.callevaluation" Width="1.5" PointX="11" PointY="3.75" />
+        <EntityTypeShape EntityType="simple_models.callmaterial" Width="1.5" PointX="4" PointY="10.75" />
+        <EntityTypeShape EntityType="simple_models.evaluation" Width="1.5" PointX="6" PointY="10.75" />
+        <EntityTypeShape EntityType="simple_models.evaluationtype" Width="1.5" PointX="11" PointY="6.75" />
+        <EntityTypeShape EntityType="simple_models.jointcall" Width="1.5" PointX="13" PointY="0.75" />
+        <EntityTypeShape EntityType="simple_models.material" Width="1.5" PointX="11" PointY="9.75" />
+        <EntityTypeShape EntityType="simple_models.serviceattendee" Width="1.5" PointX="13" PointY="7.75" />
+        <EntityTypeShape EntityType="simple_models.service" Width="1.5" PointX="14" PointY="11.75" />
+        <AssociationConnector Association="simple_models.jointcallsignature" />
+        <AssociationConnector Association="simple_models.jointcallcallevalnote" />
+        <AssociationConnector Association="simple_models.jointcallcallevaluation" />
+        <AssociationConnector Association="simple_models.evaluationtypecallevalnote" />
+        <AssociationConnector Association="simple_models.evaluationcallevaluation" />
+        <AssociationConnector Association="simple_models.jointcallcallnote" />
+        <AssociationConnector Association="simple_models.jointcallserviceattendee" />
+        <AssociationConnector Association="simple_models.userprivmodule" />
+        <AssociationConnector Association="simple_models.systemsubmoduleusersubpriv" />
+        <AssociationConnector Association="simple_models.suppliervehiclerepair" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

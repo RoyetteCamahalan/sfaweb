@@ -1,0 +1,23 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Layout.master.cs" Inherits="SimpleFFO.Layout" %>
+
+<!DOCTYPE html>
+
+<html>
+<head runat="server">
+    <title></title>
+    
+    <asp:ContentPlaceHolder ID="ContentAdditionalCSS" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    
+    <form runat="server">
+        <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
+        
+            <asp:ContentPlaceHolder ID="MainContent" runat="server">
+            </asp:ContentPlaceHolder>
+    </form>
+    <asp:ContentPlaceHolder ID="ContentAdditionalJS" runat="server">
+    </asp:ContentPlaceHolder>
+</body>
+</html>
