@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="43a8a1f642f0415cb9c85f6296e06b39" Name="Diagram1" ZoomLevel="64">
+      <Diagram DiagramId="43a8a1f642f0415cb9c85f6296e06b39" Name="Diagram1" ZoomLevel="75">
         <EntityTypeShape EntityType="simple_models.supplier" Width="1.875" PointX="23.75" PointY="0.5" />
         <EntityTypeShape EntityType="simple_models.institutiontype" Width="1.5" PointX="5.625" PointY="0.5" />
         <EntityTypeShape EntityType="simple_models.product" Width="1.5" PointX="31.5" PointY="18" />
@@ -56,13 +56,9 @@
         <AssociationConnector Association="simple_models.warehouseinstitution" />
         <AssociationConnector Association="simple_models.companyvehiclewarehouse" />
         <EntityTypeShape EntityType="simple_models.expensereportdetail" Width="2" PointX="23.75" PointY="25.375" />
-        <EntityTypeShape EntityType="simple_models.expensereportmiscellaneou" Width="2" PointX="23.75" PointY="30.125" />
         <EntityTypeShape EntityType="simple_models.expensereport" Width="1.5" PointX="20.875" PointY="26.75" />
-        <EntityTypeShape EntityType="simple_models.miscexpensecode" Width="1.5" PointX="26.75" PointY="29" />
         <EntityTypeShape EntityType="simple_models.transportationtype" Width="1.5" PointX="26.75" PointY="25.375" />
         <AssociationConnector Association="simple_models.expensereportexpensereportdetail" />
-        <AssociationConnector Association="simple_models.expensereportexpensereportmiscellaneou" />
-        <AssociationConnector Association="simple_models.miscexpensecodeexpensereportmiscellaneou" />
         <AssociationConnector Association="simple_models.transportationtypeexpensereportdetail" />
         <EntityTypeShape EntityType="simple_models.approvaltree" Width="1.5" PointX="0.5" PointY="22.375" />
         <EntityTypeShape EntityType="simple_models.module" Width="1.5" PointX="8.375" PointY="1" />
@@ -129,7 +125,12 @@
         <AssociationConnector Association="simple_models.jointcallserviceattendee" />
         <AssociationConnector Association="simple_models.userprivmodule" />
         <AssociationConnector Association="simple_models.systemsubmoduleusersubpriv" />
-        <AssociationConnector Association="simple_models.suppliervehiclerepair" />
+        <EntityTypeShape EntityType="simple_models.miscexpensecode" Width="1.5" PointX="27" PointY="29.875" />
+        <EntityTypeShape EntityType="simple_models.expensereportmiscellaneou" Width="1.5" PointX="24" PointY="30.25" />
+        <AssociationConnector Association="simple_models.expensereportmiscellaneoumiscexpensecode" />
+        <AssociationConnector Association="simple_models.expensereportmiscellaneouexpensereport" />
+        <EntityTypeShape EntityType="simple_models.vendorcategory" Width="1.5" PointX="27.25" PointY="2.25" />
+        <AssociationConnector Association="simple_models.suppliervendorcategory" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

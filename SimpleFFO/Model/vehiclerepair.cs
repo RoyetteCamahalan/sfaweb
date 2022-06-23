@@ -30,11 +30,9 @@ namespace SimpleFFO.Model
         public Nullable<int> status { get; set; }
         public Nullable<long> endorsedto { get; set; }
         public Nullable<decimal> avgamount { get; set; }
-        public Nullable<long> supplierno { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<vehiclerepairdetail> vehiclerepairdetails { get; set; }
         public virtual warehouse warehouse { get; set; }
-        public virtual supplier supplier { get; set; }
     }
 }

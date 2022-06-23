@@ -77,6 +77,7 @@ namespace SimpleFFO.Model
 
             public const string jointcalls = "jointcalls";
             public const string institutiondoctors = "institutiondoctors";
+            public const string errorlogs = "errorlogs";
             public const string usertrails = "usertrails";
             public const string mobileapps = "mobileapps";
 
@@ -139,6 +140,7 @@ namespace SimpleFFO.Model
             public const int branchapproval = 3;
             public const int mdapproval = 4;
             public const int userlogs = 5;
+            public const int errorlogs = 6;
         }
             public class Pages
         {

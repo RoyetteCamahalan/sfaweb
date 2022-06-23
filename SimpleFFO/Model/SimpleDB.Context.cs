@@ -55,9 +55,7 @@ namespace SimpleFFO.Model
         public virtual DbSet<companyvehicle> companyvehicles { get; set; }
         public virtual DbSet<warehouse> warehouses { get; set; }
         public virtual DbSet<expensereportdetail> expensereportdetails { get; set; }
-        public virtual DbSet<expensereportmiscellaneou> expensereportmiscellaneous { get; set; }
         public virtual DbSet<expensereport> expensereports { get; set; }
-        public virtual DbSet<miscexpensecode> miscexpensecodes { get; set; }
         public virtual DbSet<transportationtype> transportationtypes { get; set; }
         public virtual DbSet<approvaltree> approvaltrees { get; set; }
         public virtual DbSet<module> modules { get; set; }
@@ -93,6 +91,9 @@ namespace SimpleFFO.Model
         public virtual DbSet<material> materials { get; set; }
         public virtual DbSet<serviceattendee> serviceattendees { get; set; }
         public virtual DbSet<service> services { get; set; }
+        public virtual DbSet<miscexpensecode> miscexpensecodes { get; set; }
+        public virtual DbSet<expensereportmiscellaneou> expensereportmiscellaneous { get; set; }
+        public virtual DbSet<vendorcategory> vendorcategories { get; set; }
     
         public virtual ObjectResult<spReportDashboard_Result> spReportDashboard(Nullable<int> operation, Nullable<int> soperation, string search, Nullable<int> filterby, Nullable<long> branchid, Nullable<long> warehouseid, Nullable<int> cycleset, Nullable<int> cyclenumber, Nullable<int> quarter, Nullable<long> employeeid, Nullable<long> bbdmid, Nullable<long> rbdmid, Nullable<bool> isweb, Nullable<bool> isexport, Nullable<int> isactive, Nullable<int> mdtype, string signaturerooturl, string baseurl, Nullable<int> specializationid, Nullable<System.DateTime> date)
         {

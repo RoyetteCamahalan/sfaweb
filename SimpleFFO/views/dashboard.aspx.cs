@@ -1,4 +1,5 @@
-﻿using SimpleFFO.Controller;
+﻿using Newtonsoft.Json;
+using SimpleFFO.Controller;
 using SimpleFFO.Model;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,8 @@ namespace SimpleFFO.views
     {
         Auth auth;
         DashBoardController dashBoardController;
+        SupplierController supplierController;
+        List<vendorcategory> lstcategory;
 
         #region "Vars"
         #endregion
@@ -24,6 +27,7 @@ namespace SimpleFFO.views
                 return;
 
             dashBoardController = new DashBoardController();
+            supplierController = new SupplierController();
             if (!Page.IsPostBack)
             {
                 dashBoardController._employeeid = (long)auth.currentuser.employeeid;
@@ -34,11 +38,23 @@ namespace SimpleFFO.views
                 this.lblSubmittedCount.Text = dashBoardController.GetCountbyStatus(1).ToString();
                 this.lblApprovedCount.Text = dashBoardController.GetCountbyStatus(2).ToString();
                 ImplementPrivileges();
+                webserviceresult();
+
             }
             else
             {
                 tbl_main.HeaderRow.TableSection = TableRowSection.TableHeader;
             }
+        }
+        private void webserviceresult()
+        {
+            FFOPettyCashWS.Service1 options = new FFOPettyCashWS.Service1();
+            if(auth.currentuser.employee.employeetypeid != 222)
+            {
+                lstcategory = JsonConvert.DeserializeObject<List<vendorcategory>>(options.Download_Data(auth.GetToken(), FFOPettyCashWS.myTransactCode.CGetVendorCategory, "0"));
+                supplierController.SaveVendorCategory(lstcategory);
+            }
+           
         }
         private void ImplementPrivileges()
         {

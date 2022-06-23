@@ -312,6 +312,15 @@ namespace SimpleFFO
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl navitemusertrails;
 
         /// <summary>
+        /// navitemerrorlogs control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl navitemerrorlogs;
+
+        /// <summary>
         /// Li1 control.
         /// </summary>
         /// <remarks>
@@ -319,6 +328,15 @@ namespace SimpleFFO
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl Li1;
+
+        /// <summary>
+        /// Li2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl Li2;
 
         /// <summary>
         /// MainContent control.

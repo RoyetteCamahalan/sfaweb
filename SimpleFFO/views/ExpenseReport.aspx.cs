@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Newtonsoft.Json;
 using SimpleFFO.Controller;
 using SimpleFFO.Model;
 
@@ -18,6 +19,9 @@ namespace SimpleFFO.views
         Auth auth;
 
         List<transportationtype> drplistTransportTypes;
+        List<Exptype> lstexpensetype;
+
+
 
         #region "vars"
         private int moduleid { get => AppModels.Modules.expensereport; }
@@ -106,6 +110,7 @@ namespace SimpleFFO.views
                     this.warehouseid = auth.warehouseid;
                 }
                 displayData();
+                webserviceresult();
             }
             RegisterAsyncControls();
         }
@@ -130,6 +135,16 @@ namespace SimpleFFO.views
         public string getRequestStatusBadge(int status)
         {
             return AppModels.Status.getBadge(status);
+        }
+
+        public void webserviceresult()
+        {
+            FFOPettyCashWS.Service1 options = new FFOPettyCashWS.Service1();
+            if (auth.currentuser.employee.employeetypeid != 222)
+            {
+                lstexpensetype = JsonConvert.DeserializeObject<List<Exptype>>(options.Download_Data(auth.GetToken(), FFOPettyCashWS.myTransactCode.CGetExpenseType, "0"));
+                expenseReportController.SaveReportype(lstexpensetype);
+            }
         }
 
         public void displayData()
@@ -376,6 +391,7 @@ namespace SimpleFFO.views
                 dropDownLst.DataValueField = "misccodeid";
                 dropDownLst.DataBind();
                 dropDownLst.SelectedValue = (DataBinder.Eval(e.Row.DataItem, "misccodeid") ?? 0).ToString();
+
                 ScriptManager.GetCurrent(this).RegisterAsyncPostBackControl(btn);
 
                 if (this.isPageView)

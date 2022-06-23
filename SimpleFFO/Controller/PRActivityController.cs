@@ -17,7 +17,6 @@ namespace SimpleFFO.Controller
                     status=AppModels.Status.draft };
             return this.practivities.FirstOrDefault(i => i.practivityid == practivityid);
         }
-
         public List<activity> GetActivities()
         {
             return this.activities.Where(a => a.isactive ?? true).ToList();

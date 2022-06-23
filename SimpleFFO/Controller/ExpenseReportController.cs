@@ -25,7 +25,9 @@ namespace SimpleFFO.Controller
         }
         public List<miscexpensecode> GetListMiscType()
         {
-            return this.miscexpensecodes.Where(m => m.isactive ?? true).OrderBy(m => m.misccodename).ToList();
+            int[] active = { 1, 2 };
+
+            return this.miscexpensecodes.Where(m => active.Contains((int)m.isactive)).OrderBy(m => m.misccodename).ToList();
         }
 
         public expensereport GetExpensereport(long id)
@@ -49,6 +51,35 @@ namespace SimpleFFO.Controller
                 return 0;
             else
                 return er.expensereportid;
+        }
+        public void SaveReportype(List<Exptype> list)
+        {
+            bool validation;
+
+            foreach (var data in list)
+            {
+                if (validation = confimation(data.expenseid))
+                {
+                    miscexpensecode result = new miscexpensecode
+                    {
+                        misccodeid = data.expenseid,
+                        misccodename = data.expensetype,
+                        isactive = data.status,
+                        createdbyid = 0,
+                        created_at = DateTime.Now
+
+                    };
+                    this.miscexpensecodes.Add(result);
+                }
+                this.SaveChanges();
+            }
+        }
+        private bool confimation(long id)
+        {
+            var query = this.miscexpensecodes.Where(m => m.misccodeid == id).Select(m => m.misccodeid).ToList();
+            if (query.Count > 0)
+                return false;
+            return true;
         }
 
         public void SaveExpensReport(bool isnew, expensereport expensereport, List<expensereportdetail> expensereportdetails, List<expensereportmiscellaneou> expensereportmiscellaneous)

@@ -13,24 +13,22 @@ namespace SimpleFFO.Model
     using System.Collections.Generic;
     
     [Serializable]
-    public partial class miscexpensecode
+    public partial class vendorcategory
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public miscexpensecode()
+        public vendorcategory()
         {
-            this.expensereportmiscellaneous = new HashSet<expensereportmiscellaneou>();
+            this.suppliers = new HashSet<supplier>();
         }
     
-        public long misccodeid { get; set; }
-        public string misccodename { get; set; }
-        public Nullable<long> createdbyid { get; set; }
+        public int vendorcategoryid { get; set; }
+        public string vendorcategoryname { get; set; }
+        public bool isactive { get; set; }
         public Nullable<System.DateTime> created_at { get; set; }
-        public Nullable<long> updatedbyid { get; set; }
         public Nullable<System.DateTime> updated_at { get; set; }
         public Nullable<System.DateTime> deleted_at { get; set; }
-        public Nullable<int> isactive { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<expensereportmiscellaneou> expensereportmiscellaneous { get; set; }
+        public virtual ICollection<supplier> suppliers { get; set; }
     }
 }

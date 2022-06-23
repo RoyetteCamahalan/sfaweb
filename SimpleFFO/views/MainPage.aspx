@@ -131,12 +131,12 @@
                                                 </asp:Label>
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Is Active?" ItemStyle-HorizontalAlign="Center" HeaderStyle-Width="10%">
+                                       <%-- <asp:TemplateField HeaderText="Is Active?" ItemStyle-HorizontalAlign="Center" HeaderStyle-Width="10%">
                                             <ItemTemplate>
                                                 <asp:CheckBox ID="chkIsActive" runat="server" Checked='<%# Eval("isactive") %>' Enabled="false" />
                                             </ItemTemplate>
-                                        </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Action" ItemStyle-HorizontalAlign="Center" HeaderStyle-Width="5%">
+                                        </asp:TemplateField>--%>
+                                        <%--<asp:TemplateField HeaderText="Action" ItemStyle-HorizontalAlign="Center" HeaderStyle-Width="5%">
                                             <ItemTemplate>
                                                 <asp:UpdatePanel UpdateMode="Conditional" ID="UpdatePanel3" runat="server" ChildrenAsTriggers="false">
                                                     <ContentTemplate>
@@ -146,9 +146,8 @@
                                                         <asp:AsyncPostBackTrigger ControlID="btnColEditSupplier" EventName="Click" />
                                                     </Triggers>
                                                 </asp:UpdatePanel>
-                                                <%--<asp:Label ID="lblupdate" runat="server" CssClass="fa fa-edit"></asp:Label>--%>
                                             </ItemTemplate>
-                                        </asp:TemplateField>
+                                        </asp:TemplateField>--%>
                                     </Columns>
                                 </asp:GridView>
                                 <% break; %>
@@ -532,7 +531,6 @@
     </div>
     
     <ucvendor:VendorComponent ID="ctlvendor" runat="server" OnSave="ctlvendor_Save"></ucvendor:VendorComponent>
-
     <button type="button" id="btnopenlibmodal" data-toggle="modal" data-target=".lib-modal" hidden="hidden"></button>
     <div class="modal fade lib-modal" tabindex="-1" role="dialog" aria-hidden="true">
         <asp:UpdatePanel UpdateMode="Conditional" ID="upanelmodal" runat="server" ChildrenAsTriggers="false">

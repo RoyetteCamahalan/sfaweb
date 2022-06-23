@@ -40,8 +40,8 @@ namespace SimpleFFO.Model
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<expensereportdetail> expensereportdetails { get; set; }
+        public virtual warehouse warehouse { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<expensereportmiscellaneou> expensereportmiscellaneous { get; set; }
-        public virtual warehouse warehouse { get; set; }
     }
 }

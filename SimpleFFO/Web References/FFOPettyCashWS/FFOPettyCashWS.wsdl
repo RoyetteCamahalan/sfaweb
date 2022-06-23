@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="Generate_Token">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="employeeid" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Generate_TokenResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Generate_TokenResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Download_Data">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="rtoken" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="code" type="tns:myTransactCode" />
+            <s:element minOccurs="0" maxOccurs="1" name="branchid" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:simpleType name="myTransactCode">
+        <s:restriction base="s:string">
+          <s:enumeration value="CGetEmployees" />
+          <s:enumeration value="CGetExpenseType" />
+          <s:enumeration value="CGetFundType" />
+          <s:enumeration value="CGetVendor" />
+          <s:enumeration value="CGetBranch" />
+          <s:enumeration value="CGetVendorCategory" />
+          <s:enumeration value="CPostFundReleased" />
+          <s:enumeration value="CPostFundLiquidation" />
+          <s:enumeration value="CPostExpenseType" />
+          <s:enumeration value="CPostVendor" />
+          <s:enumeration value="CPostExpenseReport" />
+          <s:enumeration value="CPostFundReleasedCashTransfer" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="Download_DataResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Download_DataResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Upload_Data">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="rtoken" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="code" type="tns:myTransactCode" />
+            <s:element minOccurs="0" maxOccurs="1" name="jsondata" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Upload_DataResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Upload_DataResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="string" nillable="true" type="s:string" />
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="Generate_TokenSoapIn">
+    <wsdl:part name="parameters" element="tns:Generate_Token" />
+  </wsdl:message>
+  <wsdl:message name="Generate_TokenSoapOut">
+    <wsdl:part name="parameters" element="tns:Generate_TokenResponse" />
+  </wsdl:message>
+  <wsdl:message name="Download_DataSoapIn">
+    <wsdl:part name="parameters" element="tns:Download_Data" />
+  </wsdl:message>
+  <wsdl:message name="Download_DataSoapOut">
+    <wsdl:part name="parameters" element="tns:Download_DataResponse" />
+  </wsdl:message>
+  <wsdl:message name="Upload_DataSoapIn">
+    <wsdl:part name="parameters" element="tns:Upload_Data" />
+  </wsdl:message>
+  <wsdl:message name="Upload_DataSoapOut">
+    <wsdl:part name="parameters" element="tns:Upload_DataResponse" />
+  </wsdl:message>
+  <wsdl:message name="Generate_TokenHttpGetIn">
+    <wsdl:part name="employeeid" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="Generate_TokenHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="Download_DataHttpGetIn">
+    <wsdl:part name="rtoken" type="s:string" />
+    <wsdl:part name="code" type="s:string" />
+    <wsdl:part name="branchid" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="Download_DataHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="Upload_DataHttpGetIn">
+    <wsdl:part name="rtoken" type="s:string" />
+    <wsdl:part name="code" type="s:string" />
+    <wsdl:part name="jsondata" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="Upload_DataHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="Generate_TokenHttpPostIn">
+    <wsdl:part name="employeeid" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="Generate_TokenHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="Download_DataHttpPostIn">
+    <wsdl:part name="rtoken" type="s:string" />
+    <wsdl:part name="code" type="s:string" />
+    <wsdl:part name="branchid" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="Download_DataHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="Upload_DataHttpPostIn">
+    <wsdl:part name="rtoken" type="s:string" />
+    <wsdl:part name="code" type="s:string" />
+    <wsdl:part name="jsondata" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="Upload_DataHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:portType name="Service1Soap">
+    <wsdl:operation name="Generate_Token">
+      <wsdl:input message="tns:Generate_TokenSoapIn" />
+      <wsdl:output message="tns:Generate_TokenSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Download_Data">
+      <wsdl:input message="tns:Download_DataSoapIn" />
+      <wsdl:output message="tns:Download_DataSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Upload_Data">
+      <wsdl:input message="tns:Upload_DataSoapIn" />
+      <wsdl:output message="tns:Upload_DataSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="Service1HttpGet">
+    <wsdl:operation name="Generate_Token">
+      <wsdl:input message="tns:Generate_TokenHttpGetIn" />
+      <wsdl:output message="tns:Generate_TokenHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Download_Data">
+      <wsdl:input message="tns:Download_DataHttpGetIn" />
+      <wsdl:output message="tns:Download_DataHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Upload_Data">
+      <wsdl:input message="tns:Upload_DataHttpGetIn" />
+      <wsdl:output message="tns:Upload_DataHttpGetOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="Service1HttpPost">
+    <wsdl:operation name="Generate_Token">
+      <wsdl:input message="tns:Generate_TokenHttpPostIn" />
+      <wsdl:output message="tns:Generate_TokenHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Download_Data">
+      <wsdl:input message="tns:Download_DataHttpPostIn" />
+      <wsdl:output message="tns:Download_DataHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Upload_Data">
+      <wsdl:input message="tns:Upload_DataHttpPostIn" />
+      <wsdl:output message="tns:Upload_DataHttpPostOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="Service1Soap" type="tns:Service1Soap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="Generate_Token">
+      <soap:operation soapAction="http://tempuri.org/Generate_Token" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Download_Data">
+      <soap:operation soapAction="http://tempuri.org/Download_Data" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Upload_Data">
+      <soap:operation soapAction="http://tempuri.org/Upload_Data" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="Service1Soap12" type="tns:Service1Soap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="Generate_Token">
+      <soap12:operation soapAction="http://tempuri.org/Generate_Token" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Download_Data">
+      <soap12:operation soapAction="http://tempuri.org/Download_Data" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Upload_Data">
+      <soap12:operation soapAction="http://tempuri.org/Upload_Data" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="Service1HttpGet" type="tns:Service1HttpGet">
+    <http:binding verb="GET" />
+    <wsdl:operation name="Generate_Token">
+      <http:operation location="/Generate_Token" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Download_Data">
+      <http:operation location="/Download_Data" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Upload_Data">
+      <http:operation location="/Upload_Data" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="Service1HttpPost" type="tns:Service1HttpPost">
+    <http:binding verb="POST" />
+    <wsdl:operation name="Generate_Token">
+      <http:operation location="/Generate_Token" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Download_Data">
+      <http:operation location="/Download_Data" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Upload_Data">
+      <http:operation location="/Upload_Data" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Service1">
+    <wsdl:port name="Service1Soap" binding="tns:Service1Soap">
+      <soap:address location="http://120.28.222.21/ffo_pc_webservice_test/FFOPettyCashWS.asmx" />
+    </wsdl:port>
+    <wsdl:port name="Service1Soap12" binding="tns:Service1Soap12">
+      <soap12:address location="http://120.28.222.21/ffo_pc_webservice_test/FFOPettyCashWS.asmx" />
+    </wsdl:port>
+    <wsdl:port name="Service1HttpGet" binding="tns:Service1HttpGet">
+      <http:address location="http://120.28.222.21/ffo_pc_webservice_test/FFOPettyCashWS.asmx" />
+    </wsdl:port>
+    <wsdl:port name="Service1HttpPost" binding="tns:Service1HttpPost">
+      <http:address location="http://120.28.222.21/ffo_pc_webservice_test/FFOPettyCashWS.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

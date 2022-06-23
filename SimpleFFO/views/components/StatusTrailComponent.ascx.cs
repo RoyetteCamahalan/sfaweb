@@ -202,7 +202,7 @@ namespace SimpleFFO.views.components
                         {
                             vehiclerepair v = vehicleRepairController.GetVehiclerepair(this.requestId);
                             v.status = requestStatus;
-                            v.supplierno = this.supplierNo;
+                            //v.supplierno = this.supplierNo;
                             v.totalamount = this.totalAmount;
                             if (v.status == AppModels.Status.rejected)
                                 v.endorsedto = null;

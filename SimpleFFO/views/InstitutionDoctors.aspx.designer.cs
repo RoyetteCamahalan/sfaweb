@@ -168,6 +168,24 @@ namespace SimpleFFO.views
         protected global::System.Web.UI.WebControls.Button btnexportfile;
 
         /// <summary>
+        /// btnexportmduinit control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnexportmduinit;
+
+        /// <summary>
+        /// btnexportmdufile control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnexportmdufile;
+
+        /// <summary>
         /// upanelgrids control.
         /// </summary>
         /// <remarks>

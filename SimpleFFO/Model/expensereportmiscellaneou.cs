@@ -17,13 +17,13 @@ namespace SimpleFFO.Model
     {
         public long miscexpenseid { get; set; }
         public Nullable<long> expensereportid { get; set; }
-        public Nullable<int> misccodeid { get; set; }
+        public Nullable<long> misccodeid { get; set; }
         public Nullable<System.DateTime> expensedate { get; set; }
         public string particulars { get; set; }
         public Nullable<decimal> amount { get; set; }
         public string imgloc { get; set; }
     
-        public virtual expensereport expensereport { get; set; }
         public virtual miscexpensecode miscexpensecode { get; set; }
+        public virtual expensereport expensereport { get; set; }
     }
 }

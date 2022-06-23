@@ -275,7 +275,7 @@
                                                 <tr class="gvHeader">
                                                     <th></th>
                                                     <th style="vertical-align: middle; text-align: center;">Date</th>
-                                                    <th style="vertical-align: middle; text-align: center;">Code</th>
+                                                    <th style="vertical-align: middle; text-align: center;">Type</th>
                                                     <th style="vertical-align: middle; text-align: center;">Details</th>
                                                     <th style="vertical-align: middle; text-align: center;">Receipt Image</th>
                                                     <th style="vertical-align: middle; text-align: center;">Amount</th>
