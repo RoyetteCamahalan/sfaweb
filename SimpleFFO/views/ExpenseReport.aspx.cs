@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -109,11 +110,13 @@ namespace SimpleFFO.views
                     this.expensereportid = 0;
                     this.warehouseid = auth.warehouseid;
                 }
+                //tests();
                 displayData();
-                webserviceresult();
+                //webserviceresult();
             }
             RegisterAsyncControls();
         }
+
         #region "Page Methods"
         protected override void OnLoadComplete(EventArgs e)
         {
@@ -142,8 +145,15 @@ namespace SimpleFFO.views
             FFOPettyCashWS.Service1 options = new FFOPettyCashWS.Service1();
             if (auth.currentuser.employee.employeetypeid != 222)
             {
-                lstexpensetype = JsonConvert.DeserializeObject<List<Exptype>>(options.Download_Data(auth.GetToken(), FFOPettyCashWS.myTransactCode.CGetExpenseType, "0"));
-                expenseReportController.SaveReportype(lstexpensetype);
+                try
+                {
+                    lstexpensetype = JsonConvert.DeserializeObject<List<Exptype>>(options.Download_Data(auth.GetToken(), FFOPettyCashWS.myTransactCode.CGetExpenseType, "0"));
+                    expenseReportController.SaveReportype(lstexpensetype);
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex);
+                }
             }
         }
 
@@ -383,7 +393,11 @@ namespace SimpleFFO.views
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
+                int isvatresult = 0;
                 DropDownList dropDownLst = (DropDownList)e.Row.FindControl("combomisc");
+                DropDownList dropdownvat = (DropDownList)e.Row.FindControl("combovat");
+                DropDownList dropDownvendor = (DropDownList)e.Row.FindControl("combovendor");
+
                 LinkButton btn = (LinkButton)e.Row.FindControl("btnRemoveEB");
                 List<miscexpensecode> lst = expenseReportController.GetListMiscType();
                 dropDownLst.DataSource = lst;
@@ -392,11 +406,25 @@ namespace SimpleFFO.views
                 dropDownLst.DataBind();
                 dropDownLst.SelectedValue = (DataBinder.Eval(e.Row.DataItem, "misccodeid") ?? 0).ToString();
 
+                List<supplier> vendlst = expenseReportController.GetVendors(Convert.ToInt32(auth.currentuser.employee.branchid));
+                dropDownvendor.DataSource = vendlst;
+                dropDownvendor.DataTextField = "suppliername";
+                dropDownvendor.DataValueField = "supplierno";
+                dropDownvendor.DataBind();
+                dropDownvendor.SelectedValue = (DataBinder.Eval(e.Row.DataItem, "vendorid") ?? 0).ToString();
+
+                string result = (DataBinder.Eval(e.Row.DataItem, "isvat") ?? 0).ToString();
+                if (result.Equals("True"))
+                    isvatresult = 1;
+                dropdownvat.SelectedValue = isvatresult.ToString();
+
                 ScriptManager.GetCurrent(this).RegisterAsyncPostBackControl(btn);
 
                 if (this.isPageView)
                 {
                     dropDownLst.Enabled = false;
+                    dropdownvat.Enabled = false;
+                    dropDownvendor.Enabled = false;
 
                     LinkButton btnupload = (LinkButton)e.Row.FindControl("btnupload");
                     btnupload.Visible = !this.isPageView;
@@ -407,6 +435,9 @@ namespace SimpleFFO.views
 
                     TextBox txtbox_particulars = (TextBox)e.Row.FindControl("txtbox_particulars");
                     txtbox_particulars.ReadOnly = true;
+
+                    TextBox txtbox_referenceno = (TextBox)e.Row.FindControl("txtbox_referenceno");
+                    txtbox_referenceno.ReadOnly = true;
 
                     TextBox txtbox_amountEB = (TextBox)e.Row.FindControl("txtbox_amountEB");
                     txtbox_amountEB.ReadOnly = true;
@@ -439,8 +470,12 @@ namespace SimpleFFO.views
                 TextBox txtbox_amountEB = (TextBox)GvexpenseBreak.Rows[i].FindControl("txtbox_amountEB");
                 TextBox dtpDate = (TextBox)GvexpenseBreak.Rows[i].FindControl("dtpDate");
                 TextBox txtbox_particulars = (TextBox)GvexpenseBreak.Rows[i].FindControl("txtbox_particulars");
+                TextBox txt_referenceno = (TextBox)GvexpenseBreak.Rows[i].FindControl("txtbox_referenceno");
                 DropDownList combomisc = (DropDownList)GvexpenseBreak.Rows[i].FindControl("combomisc");
+                DropDownList combovat = (DropDownList)GvexpenseBreak.Rows[i].FindControl("combovat");
+                DropDownList combovend = (DropDownList)GvexpenseBreak.Rows[i].FindControl("combovendor");
                 Literal literalimagefilename = (Literal)GvexpenseBreak.Rows[i].FindControl("literalimagefilename");
+                int isvat = Convert.ToInt32(combovat.SelectedValue);
                 if (Validator.DecOneAbove(txtbox_amountEB))
 
                     lst[i].amount = Convert.ToDecimal(txtbox_amountEB.Text);
@@ -484,6 +519,25 @@ namespace SimpleFFO.views
                     lst[i].misccodeid = 0;
                     this.isPageValid = false;
                 }
+                if (Validator.DecZeroAbove(combovat))
+                {
+                    lst[i].isvat = Convert.ToBoolean(isvat);
+                    
+                }
+                if (Validator.DecZeroAbove(combovend))
+                {
+                    lst[i].vendorid = Convert.ToInt64(combovend.SelectedValue);
+                }
+                if (Validator.CharRequired(txt_referenceno))
+                {
+                    lst[i].referenceno = txt_referenceno.Text;
+                }
+                else
+                {
+                    lst[i].isvat = false;
+                    this.isPageValid = false;
+                }
+                
                 lst[i].imgloc = literalimagefilename.Text;
             }
             this.lstexpensemiscellaneous=lst;

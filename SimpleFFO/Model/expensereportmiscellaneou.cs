@@ -22,8 +22,10 @@ namespace SimpleFFO.Model
         public string particulars { get; set; }
         public Nullable<decimal> amount { get; set; }
         public string imgloc { get; set; }
+        public Nullable<bool> isvat { get; set; }
+        public string referenceno { get; set; }
+        public Nullable<long> vendorid { get; set; }
     
-        public virtual miscexpensecode miscexpensecode { get; set; }
         public virtual expensereport expensereport { get; set; }
     }
 }

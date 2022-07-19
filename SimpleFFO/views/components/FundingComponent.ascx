@@ -334,6 +334,47 @@
                             </div>
                         </div>
                         <div class="row">
+
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <div class="form-group">
+                                        <label>Vat?</label>
+                                        <asp:DropDownList ID="cmbisvatliq" runat="server" CssClass="custom-select rounded-0" TabIndex="-1"
+                                            AppendDataBoundItems="true">
+                                            <asp:ListItem Selected="False" Value="0" Text="Non-VAT"></asp:ListItem>
+                                            <asp:ListItem Selected="True" Value="1" Text="VAT"></asp:ListItem>
+                                        </asp:DropDownList>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label>Reference No.</label>
+                                    <asp:TextBox ID="txtfundliquidationrefno" runat="server" CssClass="form-control rounded-0">
+                                    </asp:TextBox>
+                                    <span class="error invalid-feedback">
+                                    <asp:Literal ID="errortxtfundliquidationrefno" runat="server"></asp:Literal></span>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label>Reference date <span class="required">*</span></label>
+
+                                    <div class="input-group date" data-target-input="nearest">
+                                        <asp:TextBox ID="txtreferencedate" runat="server" autocomplete="off" CssClass="form-control datetimepicker-input rounded-0 dtpDate" aria-describedby="inputSuccess2Status3"></asp:TextBox>
+                                        <div class="input-group-append" data-target="#reservationdatetime" data-toggle="datetimepicker">
+                                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                        </div>
+                                        <span id="spantxtreferencedate" class="sr-only">(success)</span>
+                                        <span class="error invalid-feedback"><%= AppModels.ErrorMessage.invaliddate %></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row">
                             <div class="col-lg-12 form-group">
                                 <asp:LinkButton ID="btncancelfundliquidation" runat="server" CssClass="btn btn-default btn-sm btn-flat float-right" CausesValidation="false" OnClick="btncancelfundliquidation_Click">Cancel</asp:LinkButton>
                                 <asp:LinkButton ID="btnsavefundliquidation" runat="server" CssClass="btn btn-success btn-sm btn-flat float-right" Style="margin-right: 5px;" CausesValidation="false" OnClick="btnsavefundliquidation_Click">Save</asp:LinkButton>
@@ -534,7 +575,7 @@
                                     <div class="form-group">
                                         <label for="txtvar">is vat? <span class="required">*</span></label>
                                         <asp:DropDownList ID="cmbisvat" runat="server" CssClass="custom-select rounded-0" TabIndex="-1"
-                                             AppendDataBoundItems="true">
+                                            AppendDataBoundItems="true">
                                             <asp:ListItem Selected="True" Value="0" Text="--Select--"></asp:ListItem>
                                             <asp:ListItem Selected="False" Value="1" Text="VAT"></asp:ListItem>
                                             <asp:ListItem Selected="False" Value="2" Text="Non-VAT"></asp:ListItem>
@@ -549,7 +590,7 @@
                         <asp:Button ID="btnCloseModalBottom" runat="server" CssClass="btn btn-default" data-dismiss="modal"
                             UsesSubmitBehavior="false" CausesValidation="false" Text="Close" />
                         <asp:Button ID="btnSave" runat="server" CssClass="btn btn-primary" UseSubmitBehavior="false"
-                             CausesValidation="false" Text="Save Changes" OnClick="SubmitVendor"/>
+                            CausesValidation="false" Text="Save Changes" OnClick="SubmitVendor" />
                     </div>
                 </div>
             </div>

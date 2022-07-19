@@ -24,8 +24,8 @@ namespace SimpleFFO.Model
             this.practivities = new HashSet<practivity>();
             this.tieups = new HashSet<tieup>();
             this.fundrequests = new HashSet<fundrequest>();
-            this.fundliquidations = new HashSet<fundliquidation>();
             this.vehiclerepairs = new HashSet<vehiclerepair>();
+            this.fundliquidations = new HashSet<fundliquidation>();
         }
     
         public long warehouseid { get; set; }
@@ -55,9 +55,9 @@ namespace SimpleFFO.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<fundrequest> fundrequests { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<fundliquidation> fundliquidations { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<vehiclerepair> vehiclerepairs { get; set; }
         public virtual branch branch { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<fundliquidation> fundliquidations { get; set; }
     }
 }

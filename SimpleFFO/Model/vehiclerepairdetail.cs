@@ -24,7 +24,7 @@ namespace SimpleFFO.Model
         public Nullable<decimal> totalamount { get; set; }
         public string rowuuid { get; set; }
     
-        public virtual supplier supplier { get; set; }
         public virtual vehiclerepair vehiclerepair { get; set; }
+        public virtual supplier supplier { get; set; }
     }
 }

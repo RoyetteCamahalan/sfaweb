@@ -29,12 +29,11 @@ namespace SimpleFFO.Model
         public Nullable<System.DateTime> updated_at { get; set; }
         public Nullable<System.DateTime> deleted_at { get; set; }
         public Nullable<int> isactive { get; set; }
-        public Nullable<long> branchid { get; set; }
         public Nullable<int> vendorcategoryid { get; set; }
+        public Nullable<long> branchid { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<vehiclerepairdetail> vehiclerepairdetails { get; set; }
         public virtual branch branch { get; set; }
-        public virtual vendorcategory vendorcategory { get; set; }
     }
 }

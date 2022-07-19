@@ -445,5 +445,41 @@ namespace SimpleFFO.views
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ListView tbl_cyclespecializationreport;
+
+        /// <summary>
+        /// panelreceivingperpsr control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel panelreceivingperpsr;
+
+        /// <summary>
+        /// lst_receiving control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::SimpleFFO.views.components.SimplePaginator lst_receiving;
+
+        /// <summary>
+        /// panelcallmaterialsperpsr control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel panelcallmaterialsperpsr;
+
+        /// <summary>
+        /// lst_callmaterials control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::SimpleFFO.views.components.SimplePaginator lst_callmaterials;
     }
 }

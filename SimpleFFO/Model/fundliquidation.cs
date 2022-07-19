@@ -27,6 +27,9 @@ namespace SimpleFFO.Model
         public Nullable<int> status { get; set; }
         public Nullable<long> endorsedto { get; set; }
         public string remarks { get; set; }
+        public Nullable<bool> isvat { get; set; }
+        public string referenceno { get; set; }
+        public Nullable<System.DateTime> referencedate { get; set; }
     
         public virtual warehouse warehouse { get; set; }
     }

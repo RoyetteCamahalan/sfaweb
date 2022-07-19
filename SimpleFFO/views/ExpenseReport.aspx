@@ -276,8 +276,11 @@
                                                     <th></th>
                                                     <th style="vertical-align: middle; text-align: center;">Date</th>
                                                     <th style="vertical-align: middle; text-align: center;">Type</th>
+                                                    <th style="vertical-align: middle; text-align: center;">Vendor</th>
                                                     <th style="vertical-align: middle; text-align: center;">Details</th>
+                                                    <th style="vertical-align: middle; text-align: center;">Vat</th>
                                                     <th style="vertical-align: middle; text-align: center;">Receipt Image</th>
+                                                    <th style="vertical-align: middle; text-align: center;">Ref No.</th>
                                                     <th style="vertical-align: middle; text-align: center;">Amount</th>
                                                     <% if (!this.isPageView)
                                                         { %>
@@ -287,24 +290,35 @@
                                             </HeaderTemplate>
 
                                             <ItemTemplate>
-                                                <td style="width: 20%" class="td-center">
+                                                <td style="width: 15%" class="td-center">
                                                     <div class="input-group date" id="reservationdatetime" data-target-input="nearest">
                                                         <asp:TextBox ID="dtpDate" runat="server" autocomplete="off" CssClass="form-control datetimepicker-input rounded-0 dtpDate" aria-describedby="inputSuccess2Status3"
-                                                            Text='<%# Eval("expensedate")==null ? "" : Convert.ToDateTime(Eval("expensedate")).ToString(AppModels.dateformat) %>'></asp:TextBox>
+                                                            Text='<%# Eval("expensedate")==null ? "" : Convert.ToDateTime(Eval("expensedate")).ToString(AppModels.dateformat) %>' Font-Size="Small"></asp:TextBox>
                                                         <div class="input-group-append" data-target="#reservationdatetime" data-toggle="datetimepicker">
                                                             <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                                         </div>
                                                         <span id="inputSuccess2Status3" class="sr-only">(success)</span>
                                                     </div>
                                                 </td>
-                                                <td style="width: 20%" class="td-center">
-                                                    <asp:DropDownList runat="server" ID="combomisc" CssClass="custom-select rounded-0"></asp:DropDownList>
+                                                <td style="width: 15%" class="td-center">
+                                                    <asp:DropDownList runat="server" Font-Size="Small" ID="combomisc" CssClass="custom-select rounded-0"></asp:DropDownList>
                                                 </td>
-                                                <td class="td-center">
+
+                                                <td style="width: 15%" class="td-center">
+                                                    <asp:DropDownList runat="server" ID="combovendor" CssClass="form-control rounded-0 cell fill" Font-Size="Small"></asp:DropDownList>
+                                                </td>
+
+                                                <td style="width: 10%" class="td-center">
                                                     <div class="cellfix-80">
                                                         <asp:TextBox ID="txtbox_particulars" runat="server" CssClass="form-control rounded-0 cell-fill" Font-Size="Small" Text='<%# Eval("particulars") %>'>
                                                         </asp:TextBox>
                                                     </div>
+                                                </td>
+                                                <td style="width: 10%" class="td-center">
+                                                       <asp:DropDownList runat="server" ID="combovat" CssClass="form-control rounded-0 cell fill" Font-Size="Small">
+                                                           <asp:ListItem Selected="False" Value="0" Text="Non-VAT"></asp:ListItem>
+                                                           <asp:ListItem Selected="True" Value="1" Text="VAT"></asp:ListItem>
+                                                        </asp:DropDownList>
                                                 </td>
 
                                                 <td style="width: 10%" class="td-center"><%-- Reciept Image--%>
@@ -320,6 +334,13 @@
                                                         </asp:LinkButton>
                                                     </div>
                                                 </td>
+
+                                                <td style="width: 10%" class="td-center">
+                                                    <asp:TextBox ID="txtbox_referenceno" runat="server" Font-Size="Small" Text='<%# Eval("referenceno") %>' CssClass="form-control rounded-0 cell-fill">
+                                                         
+                                                    </asp:TextBox>
+                                                </td>
+
                                                 <td style="width: 15%" class="td-center">
                                                     <asp:TextBox ID="txtbox_amountEB" runat="server" Font-Size="Small"
                                                         CssClass="form-control rounded-0 text-center"
@@ -337,7 +358,7 @@
                                             </ItemTemplate>
 
                                             <FooterTemplate>
-                                                <td colspan="3"></td>
+                                                <td colspan="6"></td>
                                                 <td>
                                                     <label class="col-form-label float-right">Totals</label></td>
 

@@ -15,12 +15,6 @@ namespace SimpleFFO.Model
     [Serializable]
     public partial class miscexpensecode
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public miscexpensecode()
-        {
-            this.expensereportmiscellaneous = new HashSet<expensereportmiscellaneou>();
-        }
-    
         public long misccodeid { get; set; }
         public string misccodename { get; set; }
         public Nullable<long> createdbyid { get; set; }
@@ -29,8 +23,5 @@ namespace SimpleFFO.Model
         public Nullable<System.DateTime> updated_at { get; set; }
         public Nullable<System.DateTime> deleted_at { get; set; }
         public Nullable<int> isactive { get; set; }
-    
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<expensereportmiscellaneou> expensereportmiscellaneous { get; set; }
     }
 }

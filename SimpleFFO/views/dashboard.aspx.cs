@@ -51,8 +51,13 @@ namespace SimpleFFO.views
             FFOPettyCashWS.Service1 options = new FFOPettyCashWS.Service1();
             if(auth.currentuser.employee.employeetypeid != 222)
             {
-                lstcategory = JsonConvert.DeserializeObject<List<vendorcategory>>(options.Download_Data(auth.GetToken(), FFOPettyCashWS.myTransactCode.CGetVendorCategory, "0"));
-                supplierController.SaveVendorCategory(lstcategory);
+                try
+                {
+                    lstcategory = JsonConvert.DeserializeObject<List<vendorcategory>>(options.Download_Data(auth.GetToken(), FFOPettyCashWS.myTransactCode.CGetVendorCategory, "0"));
+                    supplierController.SaveVendorCategory(lstcategory);
+                }
+                catch (Exception ex ) { }
+
             }
            
         }
@@ -197,6 +202,7 @@ namespace SimpleFFO.views
         protected void btnrequestypelink_Click(object sender, EventArgs e)
         {
             LinkButton btn = (LinkButton)sender;
+            string result = getElementRoute(Convert.ToInt32(dgvtoreview.DataKeys[Convert.ToInt32(btn.CommandArgument)]["moduleid"]), Convert.ToInt64(dgvtoreview.DataKeys[Convert.ToInt32(btn.CommandArgument)]["id"]));
             Response.Redirect(getElementRoute(Convert.ToInt32(dgvtoreview.DataKeys[Convert.ToInt32(btn.CommandArgument)]["moduleid"]), Convert.ToInt64(dgvtoreview.DataKeys[Convert.ToInt32(btn.CommandArgument)]["id"])));
         }
 

@@ -15,8 +15,17 @@ namespace SimpleFFO.Model
     [Serializable]
     public partial class material
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public material()
+        {
+            this.receivings = new HashSet<receiving>();
+        }
+    
         public int material_id { get; set; }
         public string material_code { get; set; }
         public string material_name { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<receiving> receivings { get; set; }
     }
 }

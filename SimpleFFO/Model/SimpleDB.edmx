@@ -357,6 +357,9 @@ warning 6002: The table/view 'simplesfa_06012022_web.dbo.branches' does not have
           <Property Name="particulars" Type="varchar" MaxLength="250" />
           <Property Name="amount" Type="money" />
           <Property Name="imgloc" Type="varchar" MaxLength="500" />
+          <Property Name="isvat" Type="bit" />
+          <Property Name="referenceno" Type="varchar" MaxLength="50" />
+          <Property Name="vendorid" Type="bigint" />
         </EntityType>
         <EntityType Name="expensereports">
           <Key>
@@ -377,6 +380,7 @@ warning 6002: The table/view 'simplesfa_06012022_web.dbo.branches' does not have
           <Property Name="previousodo" Type="bigint" />
           <Property Name="endorsedto" Type="bigint" />
           <Property Name="vehicleid" Type="bigint" />
+          <Property Name="isvat" Type="bit" />
         </EntityType>
         <EntityType Name="fundliquidations">
           <Key>
@@ -394,6 +398,9 @@ warning 6002: The table/view 'simplesfa_06012022_web.dbo.branches' does not have
           <Property Name="status" Type="int" />
           <Property Name="endorsedto" Type="bigint" />
           <Property Name="remarks" Type="varchar" MaxLength="250" />
+          <Property Name="isvat" Type="bit" />
+          <Property Name="referenceno" Type="varchar" MaxLength="250" />
+          <Property Name="referencedate" Type="date" />
         </EntityType>
         <EntityType Name="fundrequests">
           <Key>
@@ -683,6 +690,18 @@ warning 6002: The table/view 'simplesfa_06012022_web.dbo.branches' does not have
           <Property Name="updatedbyid" Type="bigint" />
           <Property Name="updated_at" Type="datetime" />
           <Property Name="deleted_at" Type="datetime" />
+        </EntityType>
+        <EntityType Name="receivings">
+          <Key>
+            <PropertyRef Name="receivingid" />
+          </Key>
+          <Property Name="receivingid" Type="bigint" Nullable="false" />
+          <Property Name="warehouseid" Type="int" />
+          <Property Name="product_id" Type="int" />
+          <Property Name="material_id" Type="int" />
+          <Property Name="quantity" Type="int" />
+          <Property Name="datereceived" Type="datetime" />
+          <Property Name="status" Type="int" />
         </EntityType>
         <EntityType Name="requeststatustrail">
           <Key>
@@ -1048,6 +1067,7 @@ warning 6002: The table/view 'simplesfa_06012022_web.dbo.territory' does not hav
           <EntitySet Name="preferences" EntityType="Self.preferences" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="products" EntityType="Self.products" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="reasons" EntityType="Self.reasons" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="receivings" EntityType="Self.receivings" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="requeststatustrail" EntityType="Self.requeststatustrail" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="rescheduledcalls" EntityType="Self.rescheduledcalls" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="salaryloan" EntityType="Self.salaryloan" Schema="dbo" store:Type="Tables" />
@@ -1108,7 +1128,6 @@ warning 6002: The table/view 'simplesfa_06012022_web.dbo.territory' does not hav
     <edmx:ConceptualModels>
       <Schema Namespace="simple_models" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="SimpleDB" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="suppliers" EntityType="simple_models.supplier" />
           <EntitySet Name="institutiontypes" EntityType="simple_models.institutiontype" />
           <EntitySet Name="products" EntityType="simple_models.product" />
           <EntitySet Name="employees" EntityType="simple_models.employee" />
@@ -1266,22 +1285,13 @@ warning 6002: The table/view 'simplesfa_06012022_web.dbo.territory' does not hav
             <End Role="employee" EntitySet="employees" />
             <End Role="employeeleave" EntitySet="employeeleaves" />
           </AssociationSet>
-          <EntitySet Name="fundliquidations" EntityType="simple_models.fundliquidation" />
           <EntitySet Name="fundrequests" EntityType="simple_models.fundrequest" />
           <AssociationSet Name="warehousefundrequest" Association="simple_models.warehousefundrequest">
             <End Role="warehouse" EntitySet="warehouses" />
             <End Role="fundrequest" EntitySet="fundrequests" />
           </AssociationSet>
-          <AssociationSet Name="warehousefundliquidation" Association="simple_models.warehousefundliquidation">
-            <End Role="warehouse" EntitySet="warehouses" />
-            <End Role="fundliquidation" EntitySet="fundliquidations" />
-          </AssociationSet>
           <EntitySet Name="vehiclerepairdetails" EntityType="simple_models.vehiclerepairdetail" />
           <EntitySet Name="vehiclerepairs" EntityType="simple_models.vehiclerepair" />
-          <AssociationSet Name="suppliervehiclerepairdetail" Association="simple_models.suppliervehiclerepairdetail">
-            <End Role="supplier" EntitySet="suppliers" />
-            <End Role="vehiclerepairdetail" EntitySet="vehiclerepairdetails" />
-          </AssociationSet>
           <AssociationSet Name="vehiclerepairvehiclerepairdetail" Association="simple_models.vehiclerepairvehiclerepairdetail">
             <End Role="vehiclerepair" EntitySet="vehiclerepairs" />
             <End Role="vehiclerepairdetail" EntitySet="vehiclerepairdetails" />
@@ -1308,10 +1318,6 @@ warning 6002: The table/view 'simplesfa_06012022_web.dbo.territory' does not hav
           <AssociationSet Name="useraccountuserpriv" Association="simple_models.useraccountuserpriv">
             <End Role="useraccount" EntitySet="useraccounts" />
             <End Role="userpriv" EntitySet="userprivs" />
-          </AssociationSet>
-          <AssociationSet Name="branchsupplier" Association="simple_models.branchsupplier">
-            <End Role="branch" EntitySet="branches" />
-            <End Role="supplier" EntitySet="suppliers" />
           </AssociationSet>
           <EntitySet Name="salaryloans" EntityType="simple_models.salaryloan" />
           <AssociationSet Name="employeesalaryloan" Association="simple_models.employeesalaryloan">
@@ -1416,39 +1422,36 @@ warning 6002: The table/view 'simplesfa_06012022_web.dbo.territory' does not hav
             <End Role="usersubpriv" EntitySet="usersubprivs" />
           </AssociationSet>
           <EntitySet Name="miscexpensecodes" EntityType="simple_models.miscexpensecode" />
-          <EntitySet Name="expensereportmiscellaneous" EntityType="simple_models.expensereportmiscellaneou" />
-          <AssociationSet Name="expensereportmiscellaneoumiscexpensecode" Association="simple_models.expensereportmiscellaneoumiscexpensecode">
-            <End Role="expensereportmiscellaneou" EntitySet="expensereportmiscellaneous" />
-            <End Role="miscexpensecode" EntitySet="miscexpensecodes" />
+          <EntitySet Name="vendorcategories" EntityType="simple_models.vendorcategory" />
+          <EntitySet Name="receivings" EntityType="simple_models.receiving" />
+          <AssociationSet Name="receivingproduct" Association="simple_models.receivingproduct">
+            <End Role="receiving" EntitySet="receivings" />
+            <End Role="product" EntitySet="products" />
           </AssociationSet>
+          <AssociationSet Name="receivingmaterial" Association="simple_models.receivingmaterial">
+            <End Role="receiving" EntitySet="receivings" />
+            <End Role="material" EntitySet="materials" />
+          </AssociationSet>
+          <EntitySet Name="fundliquidations" EntityType="simple_models.fundliquidation" />
+          <AssociationSet Name="warehousefundliquidation" Association="simple_models.warehousefundliquidation">
+            <End Role="warehouse" EntitySet="warehouses" />
+            <End Role="fundliquidation" EntitySet="fundliquidations" />
+          </AssociationSet>
+          <EntitySet Name="suppliers" EntityType="simple_models.supplier" />
+          <AssociationSet Name="suppliervehiclerepairdetail" Association="simple_models.suppliervehiclerepairdetail">
+            <End Role="supplier" EntitySet="suppliers" />
+            <End Role="vehiclerepairdetail" EntitySet="vehiclerepairdetails" />
+          </AssociationSet>
+          <AssociationSet Name="supplierbranch" Association="simple_models.supplierbranch">
+            <End Role="supplier" EntitySet="suppliers" />
+            <End Role="branch" EntitySet="branches" />
+          </AssociationSet>
+          <EntitySet Name="expensereportmiscellaneous" EntityType="simple_models.expensereportmiscellaneou" />
           <AssociationSet Name="expensereportmiscellaneouexpensereport" Association="simple_models.expensereportmiscellaneouexpensereport">
             <End Role="expensereportmiscellaneou" EntitySet="expensereportmiscellaneous" />
             <End Role="expensereport" EntitySet="expensereports" />
           </AssociationSet>
-          <EntitySet Name="vendorcategories" EntityType="simple_models.vendorcategory" />
-          <AssociationSet Name="suppliervendorcategory" Association="simple_models.suppliervendorcategory">
-            <End Role="supplier" EntitySet="suppliers" />
-            <End Role="vendorcategory" EntitySet="vendorcategories" />
-          </AssociationSet>
           </EntityContainer>
-        <EntityType Name="supplier">
-          <Key>
-            <PropertyRef Name="supplierno" />
-          </Key>
-          <Property Name="supplierno" Type="Int64" Nullable="false" />
-          <Property Name="suppliername" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
-          <Property Name="createdbyid" Type="Int64" />
-          <Property Name="created_at" Type="DateTime" Precision="3" />
-          <Property Name="updatedbyid" Type="Int64" />
-          <Property Name="updated_at" Type="DateTime" Precision="3" />
-          <Property Name="deleted_at" Type="DateTime" Precision="3" />
-          <Property Name="isactive" Type="Int32" />
-          <NavigationProperty Name="vehiclerepairdetails" Relationship="simple_models.suppliervehiclerepairdetail" FromRole="supplier" ToRole="vehiclerepairdetail" />
-          <Property Name="branchid" Type="Int64" />
-          <NavigationProperty Name="branch" Relationship="simple_models.branchsupplier" FromRole="supplier" ToRole="branch" />
-          <Property Name="vendorcategoryid" Type="Int32" />
-          <NavigationProperty Name="vendorcategory" Relationship="simple_models.suppliervendorcategory" FromRole="supplier" ToRole="vendorcategory" />
-        </EntityType>
         <EntityType Name="institutiontype">
           <Key>
             <PropertyRef Name="insttypeid" />
@@ -1484,6 +1487,7 @@ warning 6002: The table/view 'simplesfa_06012022_web.dbo.territory' does not hav
           <Property Name="packagingcode" Type="Int32" />
           <NavigationProperty Name="packaging" Relationship="simple_models.packagingproduct" FromRole="product" ToRole="packaging" />
           <NavigationProperty Name="tieupproducts" Relationship="simple_models.producttieupproduct" FromRole="product" ToRole="tieupproduct" />
+          <NavigationProperty Name="receivings" Relationship="simple_models.receivingproduct" FromRole="product" ToRole="receiving" />
         </EntityType>
         <EntityType Name="employee">
           <Key>
@@ -1944,7 +1948,7 @@ warning 6002: The table/view 'simplesfa_06012022_web.dbo.territory' does not hav
           <Property Name="branchtype" Type="Int16" />
           <NavigationProperty Name="employees" Relationship="simple_models.branchemployee" FromRole="branch" ToRole="employee" />
           <NavigationProperty Name="warehouses" Relationship="simple_models.branchwarehouse" FromRole="branch" ToRole="warehouse" />
-          <NavigationProperty Name="suppliers" Relationship="simple_models.branchsupplier" FromRole="branch" ToRole="supplier" />
+          <NavigationProperty Name="suppliers" Relationship="simple_models.supplierbranch" FromRole="branch" ToRole="supplier" />
         </EntityType>
         <Association Name="branchemployee">
           <End Type="simple_models.branch" Role="branch" Multiplicity="0..1" />
@@ -2146,9 +2150,9 @@ warning 6002: The table/view 'simplesfa_06012022_web.dbo.territory' does not hav
           <NavigationProperty Name="practivities" Relationship="simple_models.warehousepractivity" FromRole="warehouse" ToRole="practivity" />
           <NavigationProperty Name="tieups" Relationship="simple_models.warehousetieup" FromRole="warehouse" ToRole="tieup" />
           <NavigationProperty Name="fundrequests" Relationship="simple_models.warehousefundrequest" FromRole="warehouse" ToRole="fundrequest" />
-          <NavigationProperty Name="fundliquidations" Relationship="simple_models.warehousefundliquidation" FromRole="warehouse" ToRole="fundliquidation" />
           <NavigationProperty Name="vehiclerepairs" Relationship="simple_models.warehousevehiclerepair" FromRole="warehouse" ToRole="vehiclerepair" />
           <NavigationProperty Name="branch" Relationship="simple_models.branchwarehouse" FromRole="warehouse" ToRole="branch" />
+          <NavigationProperty Name="fundliquidations" Relationship="simple_models.warehousefundliquidation" FromRole="warehouse" ToRole="fundliquidation" />
         </EntityType>
         <Association Name="warehouseemployee">
           <End Type="simple_models.warehouse" Role="warehouse" Multiplicity="0..1" />
@@ -2229,6 +2233,7 @@ warning 6002: The table/view 'simplesfa_06012022_web.dbo.territory' does not hav
           <NavigationProperty Name="warehouse" Relationship="simple_models.warehouseexpensereport" FromRole="expensereport" ToRole="warehouse" />
           <Property Name="endorsedto" Type="Int64" />
           <Property Name="vehicleid" Type="Int64" />
+          <Property Name="isvat" Type="Boolean" />
           <NavigationProperty Name="expensereportmiscellaneous" Relationship="simple_models.expensereportmiscellaneouexpensereport" FromRole="expensereport" ToRole="expensereportmiscellaneou" />
         </EntityType>
         <EntityType Name="transportationtype">
@@ -2398,24 +2403,6 @@ warning 6002: The table/view 'simplesfa_06012022_web.dbo.territory' does not hav
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="fundliquidation">
-          <Key>
-            <PropertyRef Name="fundliquidationid" />
-          </Key>
-          <Property Name="fundliquidationid" Type="Int64" Nullable="false" />
-          <Property Name="warehouseid" Type="Int64" />
-          <Property Name="moduleid" Type="Int32" />
-          <Property Name="requestid" Type="Int64" />
-          <Property Name="datesubmitted" Type="DateTime" Precision="0" />
-          <Property Name="dateupdated" Type="DateTime" Precision="0" />
-          <Property Name="actualdate" Type="DateTime" Precision="0" />
-          <Property Name="amount" Type="Decimal" Precision="19" Scale="4" />
-          <Property Name="receiptimagepath" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
-          <Property Name="status" Type="Int32" />
-          <Property Name="endorsedto" Type="Int64" />
-          <Property Name="remarks" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="warehouse" Relationship="simple_models.warehousefundliquidation" FromRole="fundliquidation" ToRole="warehouse" />
-        </EntityType>
         <EntityType Name="fundrequest">
           <Key>
             <PropertyRef Name="fundrequestid" />
@@ -2450,18 +2437,6 @@ warning 6002: The table/view 'simplesfa_06012022_web.dbo.territory' does not hav
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="warehousefundliquidation">
-          <End Type="simple_models.warehouse" Role="warehouse" Multiplicity="0..1" />
-          <End Type="simple_models.fundliquidation" Role="fundliquidation" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="warehouse">
-              <PropertyRef Name="warehouseid" />
-            </Principal>
-            <Dependent Role="fundliquidation">
-              <PropertyRef Name="warehouseid" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="vehiclerepairdetail">
           <Key>
             <PropertyRef Name="vehiclerepairdetailid" />
@@ -2473,9 +2448,9 @@ warning 6002: The table/view 'simplesfa_06012022_web.dbo.territory' does not hav
           <Property Name="qty" Type="Int32" />
           <Property Name="price" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="totalamount" Type="Decimal" Precision="19" Scale="4" />
-          <NavigationProperty Name="supplier" Relationship="simple_models.suppliervehiclerepairdetail" FromRole="vehiclerepairdetail" ToRole="supplier" />
           <Property Name="rowuuid" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="vehiclerepair" Relationship="simple_models.vehiclerepairvehiclerepairdetail" FromRole="vehiclerepairdetail" ToRole="vehiclerepair" />
+          <NavigationProperty Name="supplier" Relationship="simple_models.suppliervehiclerepairdetail" FromRole="vehiclerepairdetail" ToRole="supplier" />
         </EntityType>
         <EntityType Name="vehiclerepair">
           <Key>
@@ -2493,18 +2468,6 @@ warning 6002: The table/view 'simplesfa_06012022_web.dbo.territory' does not hav
           <NavigationProperty Name="warehouse" Relationship="simple_models.warehousevehiclerepair" FromRole="vehiclerepair" ToRole="warehouse" />
           <Property Name="avgamount" Type="Decimal" Precision="19" Scale="4" />
         </EntityType>
-        <Association Name="suppliervehiclerepairdetail">
-          <End Type="simple_models.supplier" Role="supplier" Multiplicity="0..1" />
-          <End Type="simple_models.vehiclerepairdetail" Role="vehiclerepairdetail" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="supplier">
-              <PropertyRef Name="supplierno" />
-            </Principal>
-            <Dependent Role="vehiclerepairdetail">
-              <PropertyRef Name="supplierno" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="vehiclerepairvehiclerepairdetail">
           <End Type="simple_models.vehiclerepair" Role="vehiclerepair" Multiplicity="0..1" />
           <End Type="simple_models.vehiclerepairdetail" Role="vehiclerepairdetail" Multiplicity="*" />
@@ -2621,18 +2584,6 @@ warning 6002: The table/view 'simplesfa_06012022_web.dbo.territory' does not hav
             </Principal>
             <Dependent Role="userpriv">
               <PropertyRef Name="useraccountid" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="branchsupplier">
-          <End Type="simple_models.branch" Role="branch" Multiplicity="0..1" />
-          <End Type="simple_models.supplier" Role="supplier" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="branch">
-              <PropertyRef Name="branchid" />
-            </Principal>
-            <Dependent Role="supplier">
-              <PropertyRef Name="branchid" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3004,6 +2955,7 @@ warning 6002: The table/view 'simplesfa_06012022_web.dbo.territory' does not hav
           <Property Name="material_id" Type="Int32" Nullable="false" />
           <Property Name="material_code" Type="String" Nullable="false" MaxLength="2" FixedLength="false" Unicode="false" />
           <Property Name="material_name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="receivings" Relationship="simple_models.receivingmaterial" FromRole="material" ToRole="receiving" />
         </EntityType>
         <EntityType Name="serviceattendee">
           <Key>
@@ -3152,8 +3104,130 @@ warning 6002: The table/view 'simplesfa_06012022_web.dbo.territory' does not hav
           <Property Name="updated_at" Type="DateTime" Precision="3" />
           <Property Name="deleted_at" Type="DateTime" Precision="3" />
           <Property Name="isactive" Type="Int32" />
-          <NavigationProperty Name="expensereportmiscellaneous" Relationship="simple_models.expensereportmiscellaneoumiscexpensecode" FromRole="miscexpensecode" ToRole="expensereportmiscellaneou" />
         </EntityType>
+        <EntityType Name="vendorcategory">
+          <Key>
+            <PropertyRef Name="vendorcategoryid" />
+          </Key>
+          <Property Name="vendorcategoryid" Type="Int32" Nullable="false" />
+          <Property Name="vendorcategoryname" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="isactive" Type="Boolean" Nullable="false" />
+          <Property Name="created_at" Type="DateTime" Precision="3" />
+          <Property Name="updated_at" Type="DateTime" Precision="3" />
+          <Property Name="deleted_at" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="receiving">
+          <Key>
+            <PropertyRef Name="receivingid" />
+          </Key>
+          <Property Name="receivingid" Type="Int64" Nullable="false" />
+          <Property Name="warehouseid" Type="Int32" />
+          <Property Name="product_id" Type="Int32" />
+          <Property Name="material_id" Type="Int32" />
+          <Property Name="quantity" Type="Int32" />
+          <Property Name="datereceived" Type="DateTime" Precision="3" />
+          <Property Name="status" Type="Int32" />
+          <NavigationProperty Name="product" Relationship="simple_models.receivingproduct" FromRole="receiving" ToRole="product" />
+          <NavigationProperty Name="material" Relationship="simple_models.receivingmaterial" FromRole="receiving" ToRole="material" />
+        </EntityType>
+        <Association Name="receivingproduct">
+          <End Type="simple_models.receiving" Role="receiving" Multiplicity="*" />
+          <End Type="simple_models.product" Role="product" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="product">
+              <PropertyRef Name="product_id" />
+            </Principal>
+            <Dependent Role="receiving">
+              <PropertyRef Name="product_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="receivingmaterial">
+          <End Type="simple_models.receiving" Role="receiving" Multiplicity="*" />
+          <End Type="simple_models.material" Role="material" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="material">
+              <PropertyRef Name="material_id" />
+            </Principal>
+            <Dependent Role="receiving">
+              <PropertyRef Name="material_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="fundliquidation">
+          <Key>
+            <PropertyRef Name="fundliquidationid" />
+          </Key>
+          <Property Name="fundliquidationid" Type="Int64" Nullable="false" />
+          <Property Name="warehouseid" Type="Int64" />
+          <Property Name="moduleid" Type="Int32" />
+          <Property Name="requestid" Type="Int64" />
+          <Property Name="datesubmitted" Type="DateTime" Precision="0" />
+          <Property Name="dateupdated" Type="DateTime" Precision="0" />
+          <Property Name="actualdate" Type="DateTime" Precision="0" />
+          <Property Name="amount" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="receiptimagepath" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="status" Type="Int32" />
+          <Property Name="endorsedto" Type="Int64" />
+          <Property Name="remarks" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="isvat" Type="Boolean" />
+          <Property Name="referenceno" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="referencedate" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="warehouse" Relationship="simple_models.warehousefundliquidation" FromRole="fundliquidation" ToRole="warehouse" />
+        </EntityType>
+        <Association Name="warehousefundliquidation">
+          <End Type="simple_models.warehouse" Role="warehouse" Multiplicity="0..1" />
+          <End Type="simple_models.fundliquidation" Role="fundliquidation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="warehouse">
+              <PropertyRef Name="warehouseid" />
+            </Principal>
+            <Dependent Role="fundliquidation">
+              <PropertyRef Name="warehouseid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="supplier">
+          <Key>
+            <PropertyRef Name="supplierno" />
+          </Key>
+          <Property Name="supplierno" Type="Int64" Nullable="false" />
+          <Property Name="suppliername" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="createdbyid" Type="Int64" />
+          <Property Name="created_at" Type="DateTime" Precision="3" />
+          <Property Name="updatedbyid" Type="Int64" />
+          <Property Name="updated_at" Type="DateTime" Precision="3" />
+          <Property Name="deleted_at" Type="DateTime" Precision="3" />
+          <Property Name="isactive" Type="Int32" />
+          <Property Name="vendorcategoryid" Type="Int32" />
+          <Property Name="branchid" Type="Int64" />
+          <NavigationProperty Name="vehiclerepairdetails" Relationship="simple_models.suppliervehiclerepairdetail" FromRole="supplier" ToRole="vehiclerepairdetail" />
+          <NavigationProperty Name="branch" Relationship="simple_models.supplierbranch" FromRole="supplier" ToRole="branch" />
+        </EntityType>
+        <Association Name="suppliervehiclerepairdetail">
+          <End Type="simple_models.supplier" Role="supplier" Multiplicity="0..1" />
+          <End Type="simple_models.vehiclerepairdetail" Role="vehiclerepairdetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="supplier">
+              <PropertyRef Name="supplierno" />
+            </Principal>
+            <Dependent Role="vehiclerepairdetail">
+              <PropertyRef Name="supplierno" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="supplierbranch">
+          <End Type="simple_models.supplier" Role="supplier" Multiplicity="*" />
+          <End Type="simple_models.branch" Role="branch" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="branch">
+              <PropertyRef Name="branchid" />
+            </Principal>
+            <Dependent Role="supplier">
+              <PropertyRef Name="branchid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityType Name="expensereportmiscellaneou">
           <Key>
             <PropertyRef Name="miscexpenseid" />
@@ -3165,21 +3239,11 @@ warning 6002: The table/view 'simplesfa_06012022_web.dbo.territory' does not hav
           <Property Name="particulars" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
           <Property Name="amount" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="imgloc" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="miscexpensecode" Relationship="simple_models.expensereportmiscellaneoumiscexpensecode" FromRole="expensereportmiscellaneou" ToRole="miscexpensecode" />
+          <Property Name="isvat" Type="Boolean" />
           <NavigationProperty Name="expensereport" Relationship="simple_models.expensereportmiscellaneouexpensereport" FromRole="expensereportmiscellaneou" ToRole="expensereport" />
+          <Property Name="referenceno" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="vendorid" Type="Int64" />
         </EntityType>
-        <Association Name="expensereportmiscellaneoumiscexpensecode">
-          <End Type="simple_models.expensereportmiscellaneou" Role="expensereportmiscellaneou" Multiplicity="*" />
-          <End Type="simple_models.miscexpensecode" Role="miscexpensecode" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="miscexpensecode">
-              <PropertyRef Name="misccodeid" />
-            </Principal>
-            <Dependent Role="expensereportmiscellaneou">
-              <PropertyRef Name="misccodeid" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="expensereportmiscellaneouexpensereport">
           <End Type="simple_models.expensereportmiscellaneou" Role="expensereportmiscellaneou" Multiplicity="*" />
           <End Type="simple_models.expensereport" Role="expensereport" Multiplicity="0..1" />
@@ -3192,52 +3256,12 @@ warning 6002: The table/view 'simplesfa_06012022_web.dbo.territory' does not hav
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="vendorcategory">
-          <Key>
-            <PropertyRef Name="vendorcategoryid" />
-          </Key>
-          <Property Name="vendorcategoryid" Type="Int32" Nullable="false" />
-          <Property Name="vendorcategoryname" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="isactive" Type="Boolean" Nullable="false" />
-          <Property Name="created_at" Type="DateTime" Precision="3" />
-          <Property Name="updated_at" Type="DateTime" Precision="3" />
-          <Property Name="deleted_at" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="suppliers" Relationship="simple_models.suppliervendorcategory" FromRole="vendorcategory" ToRole="supplier" />
-        </EntityType>
-        <Association Name="suppliervendorcategory">
-          <End Type="simple_models.supplier" Role="supplier" Multiplicity="*" />
-          <End Type="simple_models.vendorcategory" Role="vendorcategory" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="vendorcategory">
-              <PropertyRef Name="vendorcategoryid" />
-            </Principal>
-            <Dependent Role="supplier">
-              <PropertyRef Name="vendorcategoryid" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="simple_modelsStoreContainer" CdmEntityContainer="SimpleDB">
-          <EntitySetMapping Name="suppliers">
-            <EntityTypeMapping TypeName="simple_models.supplier">
-              <MappingFragment StoreEntitySet="suppliers">
-                <ScalarProperty Name="vendorcategoryid" ColumnName="vendorcategoryid" />
-                <ScalarProperty Name="branchid" ColumnName="branchid" />
-                <ScalarProperty Name="isactive" ColumnName="isactive" />
-                <ScalarProperty Name="deleted_at" ColumnName="deleted_at" />
-                <ScalarProperty Name="updated_at" ColumnName="updated_at" />
-                <ScalarProperty Name="updatedbyid" ColumnName="updatedbyid" />
-                <ScalarProperty Name="created_at" ColumnName="created_at" />
-                <ScalarProperty Name="createdbyid" ColumnName="createdbyid" />
-                <ScalarProperty Name="suppliername" ColumnName="suppliername" />
-                <ScalarProperty Name="supplierno" ColumnName="supplierno" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="institutiontypes">
             <EntityTypeMapping TypeName="simple_models.institutiontype">
               <MappingFragment StoreEntitySet="institutiontypes">
@@ -3699,6 +3723,7 @@ warning 6002: The table/view 'simplesfa_06012022_web.dbo.territory' does not hav
           <EntitySetMapping Name="expensereports">
             <EntityTypeMapping TypeName="simple_models.expensereport">
               <MappingFragment StoreEntitySet="expensereports">
+                <ScalarProperty Name="isvat" ColumnName="isvat" />
                 <ScalarProperty Name="vehicleid" ColumnName="vehicleid" />
                 <ScalarProperty Name="endorsedto" ColumnName="endorsedto" />
                 <ScalarProperty Name="previousodo" ColumnName="previousodo" />
@@ -3772,24 +3797,6 @@ warning 6002: The table/view 'simplesfa_06012022_web.dbo.territory' does not hav
                 <ScalarProperty Name="requestid" ColumnName="requestid" />
                 <ScalarProperty Name="moduleid" ColumnName="moduleid" />
                 <ScalarProperty Name="trailid" ColumnName="trailid" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="fundliquidations">
-            <EntityTypeMapping TypeName="simple_models.fundliquidation">
-              <MappingFragment StoreEntitySet="fundliquidations">
-                <ScalarProperty Name="remarks" ColumnName="remarks" />
-                <ScalarProperty Name="endorsedto" ColumnName="endorsedto" />
-                <ScalarProperty Name="status" ColumnName="status" />
-                <ScalarProperty Name="receiptimagepath" ColumnName="receiptimagepath" />
-                <ScalarProperty Name="amount" ColumnName="amount" />
-                <ScalarProperty Name="actualdate" ColumnName="actualdate" />
-                <ScalarProperty Name="dateupdated" ColumnName="dateupdated" />
-                <ScalarProperty Name="datesubmitted" ColumnName="datesubmitted" />
-                <ScalarProperty Name="requestid" ColumnName="requestid" />
-                <ScalarProperty Name="moduleid" ColumnName="moduleid" />
-                <ScalarProperty Name="warehouseid" ColumnName="warehouseid" />
-                <ScalarProperty Name="fundliquidationid" ColumnName="fundliquidationid" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -4245,19 +4252,6 @@ warning 6002: The table/view 'simplesfa_06012022_web.dbo.territory' does not hav
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="expensereportmiscellaneous">
-            <EntityTypeMapping TypeName="simple_models.expensereportmiscellaneou">
-              <MappingFragment StoreEntitySet="expensereportmiscellaneous">
-                <ScalarProperty Name="imgloc" ColumnName="imgloc" />
-                <ScalarProperty Name="amount" ColumnName="amount" />
-                <ScalarProperty Name="particulars" ColumnName="particulars" />
-                <ScalarProperty Name="expensedate" ColumnName="expensedate" />
-                <ScalarProperty Name="misccodeid" ColumnName="misccodeid" />
-                <ScalarProperty Name="expensereportid" ColumnName="expensereportid" />
-                <ScalarProperty Name="miscexpenseid" ColumnName="miscexpenseid" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="vendorcategories">
             <EntityTypeMapping TypeName="simple_models.vendorcategory">
               <MappingFragment StoreEntitySet="vendorcategory">
@@ -4267,6 +4261,72 @@ warning 6002: The table/view 'simplesfa_06012022_web.dbo.territory' does not hav
                 <ScalarProperty Name="isactive" ColumnName="isactive" />
                 <ScalarProperty Name="vendorcategoryname" ColumnName="vendorcategoryname" />
                 <ScalarProperty Name="vendorcategoryid" ColumnName="vendorcategoryid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="receivings">
+            <EntityTypeMapping TypeName="simple_models.receiving">
+              <MappingFragment StoreEntitySet="receivings">
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="datereceived" ColumnName="datereceived" />
+                <ScalarProperty Name="quantity" ColumnName="quantity" />
+                <ScalarProperty Name="material_id" ColumnName="material_id" />
+                <ScalarProperty Name="product_id" ColumnName="product_id" />
+                <ScalarProperty Name="warehouseid" ColumnName="warehouseid" />
+                <ScalarProperty Name="receivingid" ColumnName="receivingid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="fundliquidations">
+            <EntityTypeMapping TypeName="simple_models.fundliquidation">
+              <MappingFragment StoreEntitySet="fundliquidations">
+                <ScalarProperty Name="referencedate" ColumnName="referencedate" />
+                <ScalarProperty Name="referenceno" ColumnName="referenceno" />
+                <ScalarProperty Name="isvat" ColumnName="isvat" />
+                <ScalarProperty Name="remarks" ColumnName="remarks" />
+                <ScalarProperty Name="endorsedto" ColumnName="endorsedto" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="receiptimagepath" ColumnName="receiptimagepath" />
+                <ScalarProperty Name="amount" ColumnName="amount" />
+                <ScalarProperty Name="actualdate" ColumnName="actualdate" />
+                <ScalarProperty Name="dateupdated" ColumnName="dateupdated" />
+                <ScalarProperty Name="datesubmitted" ColumnName="datesubmitted" />
+                <ScalarProperty Name="requestid" ColumnName="requestid" />
+                <ScalarProperty Name="moduleid" ColumnName="moduleid" />
+                <ScalarProperty Name="warehouseid" ColumnName="warehouseid" />
+                <ScalarProperty Name="fundliquidationid" ColumnName="fundliquidationid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="suppliers">
+            <EntityTypeMapping TypeName="simple_models.supplier">
+              <MappingFragment StoreEntitySet="suppliers">
+                <ScalarProperty Name="branchid" ColumnName="branchid" />
+                <ScalarProperty Name="vendorcategoryid" ColumnName="vendorcategoryid" />
+                <ScalarProperty Name="isactive" ColumnName="isactive" />
+                <ScalarProperty Name="deleted_at" ColumnName="deleted_at" />
+                <ScalarProperty Name="updated_at" ColumnName="updated_at" />
+                <ScalarProperty Name="updatedbyid" ColumnName="updatedbyid" />
+                <ScalarProperty Name="created_at" ColumnName="created_at" />
+                <ScalarProperty Name="createdbyid" ColumnName="createdbyid" />
+                <ScalarProperty Name="suppliername" ColumnName="suppliername" />
+                <ScalarProperty Name="supplierno" ColumnName="supplierno" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="expensereportmiscellaneous">
+            <EntityTypeMapping TypeName="simple_models.expensereportmiscellaneou">
+              <MappingFragment StoreEntitySet="expensereportmiscellaneous">
+                <ScalarProperty Name="vendorid" ColumnName="vendorid" />
+                <ScalarProperty Name="referenceno" ColumnName="referenceno" />
+                <ScalarProperty Name="isvat" ColumnName="isvat" />
+                <ScalarProperty Name="imgloc" ColumnName="imgloc" />
+                <ScalarProperty Name="amount" ColumnName="amount" />
+                <ScalarProperty Name="particulars" ColumnName="particulars" />
+                <ScalarProperty Name="expensedate" ColumnName="expensedate" />
+                <ScalarProperty Name="misccodeid" ColumnName="misccodeid" />
+                <ScalarProperty Name="expensereportid" ColumnName="expensereportid" />
+                <ScalarProperty Name="miscexpenseid" ColumnName="miscexpenseid" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

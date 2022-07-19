@@ -339,6 +339,42 @@ namespace SimpleFFO.views.components
         protected global::System.Web.UI.WebControls.Image imgpreview;
 
         /// <summary>
+        /// cmbisvatliq control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList cmbisvatliq;
+
+        /// <summary>
+        /// txtfundliquidationrefno control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtfundliquidationrefno;
+
+        /// <summary>
+        /// errortxtfundliquidationrefno control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal errortxtfundliquidationrefno;
+
+        /// <summary>
+        /// txtreferencedate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtreferencedate;
+
+        /// <summary>
         /// btncancelfundliquidation control.
         /// </summary>
         /// <remarks>

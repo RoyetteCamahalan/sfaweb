@@ -23,6 +23,7 @@ namespace SimpleFFO.Controller
             //return this.suppliers.Where(i => (i.branchid == branchid || (i.branchid ?? 0) == 0) && (i.isrepairshop ?? false) == true).ToList();
             return this.suppliers.Where(i => (i.branchid == branchid || (i.branchid ?? 0) == 0) && (ids.Contains((int) i.isactive)) && i.vendorcategoryid == 2).ToList();
         }
+
         public bool isExist(long id, string name)
         {
             return this.suppliers.Where(i => i.suppliername == name && i.supplierno != id).Count() > 0;

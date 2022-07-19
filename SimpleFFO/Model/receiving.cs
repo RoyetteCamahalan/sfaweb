@@ -13,13 +13,17 @@ namespace SimpleFFO.Model
     using System.Collections.Generic;
     
     [Serializable]
-    public partial class vendorcategory
+    public partial class receiving
     {
-        public int vendorcategoryid { get; set; }
-        public string vendorcategoryname { get; set; }
-        public bool isactive { get; set; }
-        public Nullable<System.DateTime> created_at { get; set; }
-        public Nullable<System.DateTime> updated_at { get; set; }
-        public Nullable<System.DateTime> deleted_at { get; set; }
+        public long receivingid { get; set; }
+        public Nullable<int> warehouseid { get; set; }
+        public Nullable<int> product_id { get; set; }
+        public Nullable<int> material_id { get; set; }
+        public Nullable<int> quantity { get; set; }
+        public Nullable<System.DateTime> datereceived { get; set; }
+        public Nullable<int> status { get; set; }
+    
+        public virtual product product { get; set; }
+        public virtual material material { get; set; }
     }
 }

@@ -473,7 +473,9 @@ namespace SimpleFFO.Model
             public const int callperformanceperspecialty = 9;
             public const int cyclereportspecialization = 10;
             public const int jointcalls = 11;
-            public const int servicecalls = 12; 
+            public const int servicecalls = 12;
+            public const int receiving = 13;
+            public const int dispense = 14;
         }
         public class ErrorMessage
         {

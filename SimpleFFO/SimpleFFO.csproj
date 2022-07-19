@@ -400,7 +400,9 @@
     <Compile Include="Model\fundliquidation.cs">
       <DependentUpon>SimpleDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\Fundliquidations.cs" />
     <Compile Include="Model\Fundreleased.cs" />
+    <Compile Include="Model\FundreleasedcashTransfer.cs" />
     <Compile Include="Model\fundrequest.cs">
       <DependentUpon>SimpleDB.tt</DependentUpon>
     </Compile>
@@ -444,6 +446,7 @@
     <Compile Include="Model\plandetail.cs">
       <DependentUpon>SimpleDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\PostExpenseReports.cs" />
     <Compile Include="Model\practivity.cs">
       <DependentUpon>SimpleDB.tt</DependentUpon>
     </Compile>
@@ -460,6 +463,9 @@
       <DependentUpon>SimpleDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\reason.cs">
+      <DependentUpon>SimpleDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\receiving.cs">
       <DependentUpon>SimpleDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\requeststatustrail.cs">
