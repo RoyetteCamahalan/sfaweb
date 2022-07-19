@@ -37,11 +37,12 @@ namespace SimpleFFO.Model
         public Nullable<long> previousodo { get; set; }
         public Nullable<long> endorsedto { get; set; }
         public Nullable<long> vehicleid { get; set; }
+        public Nullable<bool> isvat { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<expensereportdetail> expensereportdetails { get; set; }
+        public virtual warehouse warehouse { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<expensereportmiscellaneou> expensereportmiscellaneous { get; set; }
-        public virtual warehouse warehouse { get; set; }
     }
 }

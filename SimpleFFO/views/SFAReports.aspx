@@ -633,6 +633,78 @@
                                         </tr>
                                     </ItemTemplate>
                                 </asp:ListView>
+
+
+                                <asp:Panel ID="panelreceivingperpsr" runat="server" Visible="false">
+                                    
+                                    <ucpaginator:SimplePaginator ID="lst_receiving" runat="server" ItemPlaceholderID="itemPlaceHolder1" Visible="false">
+                                        <LayoutTemplate>
+                                            <table class="table table-bordered table-hover dataTable dtr-inline responsive-table">
+                                                <thead>
+                                                    <th class="text-center" style="width: 15%">Name</th>
+                                                    <th class="text-center" style="width: 15%">Product Name</th>
+                                                    <th class="text-center" style="width: 10%">Sample</th>
+                                                    <th class="text-center" style="width: 10%">Literature</th>
+                                                    <th class="text-center" style="width: 10%">promaterials</th>
+                                                    <th class="text-center" style="width: 15%">date</th>
+                                                </thead>
+                                                <tbody>
+                                                    <asp:PlaceHolder runat="server" ID="itemplaceholder1"></asp:PlaceHolder>
+                                                </tbody>
+                                            </table>
+                                        </LayoutTemplate>
+                                        <ItemTemplate>
+                                            <tr>
+                                                <td class="text-center"><span><%# Eval("name") %></span></td>
+                                                <td class="text-center"><span><%# Eval("product_name") %></span></td>
+                                                <td class="text-center"><span><%# Eval("sample") %></span></td>
+                                                <td class="text-center"><span><%# Eval("literature") %></span></td>
+                                                <td class="text-center"><span><%# Eval("promaterials") %></span></td>
+                                                <td class="text-center"><span><%# Convert.ToDateTime( Eval("date")).ToString("MM/dd/yyy") %></span></td>
+                                            </tr>
+                                        </ItemTemplate>
+                                    </ucpaginator:SimplePaginator>
+
+                                </asp:Panel>
+
+                                <asp:Panel ID="panelcallmaterialsperpsr" runat="server" Visible="false">
+
+                                    <ucpaginator:SimplePaginator ID="lst_callmaterials" runat="server" ItemPlaceholderID="itemPlaceHolder1"
+                                         OnLayoutCreated="lst_callmaterials_layoutCreated" pageSize="20" Visible="false">
+                                        <LayoutTemplate>
+                                            <table class="table table-bordered table-hover dataTable dtr-inline responsive-table">
+                                                <thead>
+                                                    <th class="text-center" style="width: 15%">psr</th>
+                                                    <th class="text-center" style="width: 15%"> Doctor Name</th>
+                                                    <th class="text-center" style="width: 15%">Product Name</th>
+                                                    <th class="text-center" style="width: 10%">Sample</th>
+                                                    <th class="text-center" style="width: 10%">Literature</th>
+                                                    <th class="text-center" style="width: 10%">Pro Materials</th>
+                                                    <th class="text-center" style="width: 10%">Date</th>
+                                                    <th class="text-center" style="width: 15%">Institution</th>
+                                                </thead>
+                                                <tbody>
+                                                    <asp:PlaceHolder runat="server" ID="itemPlaceHolder1"></asp:PlaceHolder>
+                                                </tbody>
+                                            </table>
+                                        </LayoutTemplate>
+                                        <ItemTemplate>
+                                            <tr>
+                                                <td class="text-center" style="width: 15%"><span><%# Eval("psr") %></span></td>
+                                                <td class="text-center" style="width: 15%"><span><%# Eval("docname") %></span></td>
+                                                <td class="text-center" style="width: 15%"><span><%# Eval("name") %></span></td>
+                                                <td class="text-center" style="width: 10%"><span><%# Eval("sample") %></span></td>
+                                                <td class="text-center" style="width: 10%"><span><%# Eval("literature") %></span></td>
+                                                <td class="text-center" style="width: 10%"><span><%# Eval("promaterials") %></span></td>
+                                                <td class="text-center" style="width: 10%"><span><%# Convert.ToDateTime( Eval("date")).ToString("MM/dd/yyy") %></span></td>
+                                                <td class="text-center" style="width: 15%"><span><%# Eval("inst_name") %></span></td>
+                                            </tr>
+                                        </ItemTemplate>
+                                    </ucpaginator:SimplePaginator>
+                                </asp:Panel>
+
+
+
                             </ContentTemplate>
                         </asp:UpdatePanel>
                     </div>

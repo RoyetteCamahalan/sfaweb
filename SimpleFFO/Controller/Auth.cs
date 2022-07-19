@@ -78,6 +78,15 @@ namespace SimpleFFO.Controller
             }
             return false;
         }
+
+        public string GetToken()
+        {
+            string raw = currentuser.employee.employeeid.ToString().Trim()+ "|" + DateTime.Now.ToString("ddMMyyyy")
+                + "|" + DateTime.Now.ToString("HHmm");
+
+            return WebServiceSecurity.Encrypt(raw, "");
+        }
+
         public void Logout()
         {
             SessionController.setSession(SessionController.SesssionKeys.employeeid, null);
@@ -93,11 +102,11 @@ namespace SimpleFFO.Controller
             return res ?? new usersubpriv();
         }
 
-        public void SaveLog(string module,string action)
+        public void SaveLog(string module, string action, int whatype = 0)
         {
             userlog u = new userlog
             {
-                typeid = 0, //sfawebreport
+                typeid = whatype, //sfawebreport
                 module = module,
                 action = action,
                 logdate = DateTime.Now
@@ -114,6 +123,48 @@ namespace SimpleFFO.Controller
             }
             this.userlogs.Add(u);
             this.SaveChanges();
+        }
+        public class WebServiceSecurity
+        {
+            private const string initVector = "JHAYROSEBROSALES";
+            private const int keysize = 256;
+
+            public static string Encrypt(string plainText,string passPhrase)
+            {
+                byte[] iniVectorBytes = Encoding.UTF8.GetBytes(initVector);
+                byte[] plainTextBytes = Encoding.UTF8.GetBytes(plainText);
+                PasswordDeriveBytes password = new PasswordDeriveBytes(passPhrase, null);
+                byte[] keyBytes = password.GetBytes(keysize / 8);
+                RijndaelManaged symmetrickey = new RijndaelManaged();
+                symmetrickey.Mode = CipherMode.CBC;
+                ICryptoTransform encryptor = symmetrickey.CreateEncryptor(keyBytes, iniVectorBytes);
+                MemoryStream memoryStream = new MemoryStream();
+                CryptoStream cryptoStream = new CryptoStream(memoryStream, encryptor, CryptoStreamMode.Write);
+                cryptoStream.Write(plainTextBytes, 0, plainTextBytes.Length);
+                cryptoStream.FlushFinalBlock();
+                byte[] cipherTextBytes = memoryStream.ToArray();
+                memoryStream.Close();
+                cryptoStream.Close();
+                return Convert.ToBase64String(cipherTextBytes);
+            }
+
+            public static string Decrypt(string cipherText,string passPhrase)
+            {
+                byte[] initVectorBytes = Encoding.ASCII.GetBytes(initVector);
+                byte[] cipherTextBytes = Convert.FromBase64String(cipherText);
+                PasswordDeriveBytes password = new PasswordDeriveBytes(passPhrase, null);
+                byte[] keyBytes = password.GetBytes(keysize / 8);
+                RijndaelManaged symmetriKey = new RijndaelManaged();
+                symmetriKey.Mode = CipherMode.CBC;
+                ICryptoTransform decryptor = symmetriKey.CreateDecryptor(keyBytes, initVectorBytes);
+                MemoryStream memoryStream = new MemoryStream(cipherTextBytes);
+                CryptoStream cryptoStream = new CryptoStream(memoryStream, decryptor, CryptoStreamMode.Read);
+                byte[] plainTextBytes = new byte[cipherTextBytes.Length - 1 + 1];
+                int decryptedByteCount = cryptoStream.Read(plainTextBytes, 0, plainTextBytes.Length);
+                memoryStream.Close();
+                cryptoStream.Close();
+                return Encoding.UTF8.GetString(plainTextBytes, 0, decryptedByteCount);
+            }
         }
 
         public class AppSecurity

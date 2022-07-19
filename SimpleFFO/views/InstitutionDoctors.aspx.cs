@@ -67,6 +67,8 @@ namespace SimpleFFO.views
                     tablistmenu.Visible = false;
                     panelpsrlist.Visible = true;
                     DisplayList();
+                    //btnexportinit.Text = " Export MDU altered";
+                    //btnexportfile.Text = " Export MDU altered";
                 }
                 else
                 {
@@ -78,6 +80,9 @@ namespace SimpleFFO.views
                     {
                         LoadForApproval();
                     }
+
+                    //btnexportinit.Text = " Export to Excel";
+                    //btnexportfile.Text = " Export to Excel";
                 }
 
 
@@ -87,6 +92,7 @@ namespace SimpleFFO.views
         private void RegisterAsyncControls()
         {
             ScriptManager.GetCurrent(Page).RegisterPostBackControl(btnexportfile);//POST BACK; NOT ASYNC
+            ScriptManager.GetCurrent(Page).RegisterPostBackControl(btnexportmdufile);
             RegisterAsyncControlsForApproval();
             RegisterAsyncControlsPSRList();
         }
@@ -309,7 +315,7 @@ namespace SimpleFFO.views
             }
             upanelreportmain.Update();
         }
-        private void DisplayList(bool isexport = false)
+        private void DisplayList(bool isexport = false, int exporttype = 0) // 0 = none 1 = export mdlist 2= export MDU ALT
         {
             long rbdmid = Convert.ToInt64(cmbrbdm.SelectedValue);
             long branch_id = Convert.ToInt64(cmbbranches.SelectedValue);
@@ -366,30 +372,63 @@ namespace SimpleFFO.views
             }
             else
             {
-                string name = "MDList" + DateTime.Now.ToString("yyyyMMdd_hhmmtt") + ".xlsx";
-                dt = reportDashBoard.GetResultReport(0, 37, branch_id, rbdmid, districtmanagerid, warehouseid, 1990, 1, isactive: 2, mdtype: 0);
-
-                Workbook workbook = new Workbook();
-                workbook.LoadFromFile(Server.MapPath("~/Template/mdlstTemplate.xlsx"));
-
-                var EditWorkbook = new Workbook();
-
-                using (var stream = new MemoryStream())
+                if (exporttype == 1)
                 {
-                    workbook.SaveToStream(stream, FileFormat.Version2010);
-                    stream.Seek(0, SeekOrigin.Begin);
-                    EditWorkbook.LoadFromStream(stream, ExcelVersion.Version2010);
-                }
+                    string name = "MDList" + DateTime.Now.ToString("yyyyMMdd_hhmmtt") + ".xlsx";
+                    dt = reportDashBoard.GetResultReport(0, 37, branch_id, rbdmid, districtmanagerid, warehouseid, 1990, 1, isactive: 2, mdtype: 0);
 
-                Worksheet sheet = EditWorkbook.Worksheets[1];
-                sheet.InsertDataTable(dt, false, 2, 1);
-                XlsPivotTable pvtmasterlst = EditWorkbook.Worksheets[0].PivotTables[0] as XlsPivotTable;
-                pvtmasterlst.Cache.IsRefreshOnLoad = true;
-                sheet.AllocatedRange.AutoFitColumns();
-                sheet.AllocatedRange.AutoFitRows();
-                auth.SaveLog("MD List", "Export MD List: RBDM-" + cmbrbdm.SelectedItem.Text + " Branch-" + cmbbranches.SelectedItem.Text + " BBDM-" + cmbbbdm.SelectedItem.Text +
-                     " PSR-" + cmbpsr.SelectedItem.Text);
-                EditWorkbook.SaveToHttpResponse(name, Response, HttpContentType.Excel2010);
+                    Workbook workbook = new Workbook();
+                    workbook.LoadFromFile(Server.MapPath("~/Template/mdlstTemplate.xlsx"));
+
+                    var EditWorkbook = new Workbook();
+
+                    using (var stream = new MemoryStream())
+                    {
+                        workbook.SaveToStream(stream, FileFormat.Version2010);
+                        stream.Seek(0, SeekOrigin.Begin);
+                        EditWorkbook.LoadFromStream(stream, ExcelVersion.Version2010);
+                    }
+
+                    Worksheet sheet = EditWorkbook.Worksheets[1];
+                    sheet.InsertDataTable(dt, false, 2, 1);
+                    XlsPivotTable pvtmasterlst = EditWorkbook.Worksheets[0].PivotTables[0] as XlsPivotTable;
+                    pvtmasterlst.Cache.IsRefreshOnLoad = true;
+                    sheet.AllocatedRange.AutoFitColumns();
+                    sheet.AllocatedRange.AutoFitRows();
+                    auth.SaveLog("MD List", "Export MD List: RBDM-" + cmbrbdm.SelectedItem.Text + " Branch-" + cmbbranches.SelectedItem.Text + " BBDM-" + cmbbbdm.SelectedItem.Text +
+                         " PSR-" + cmbpsr.SelectedItem.Text);
+                    EditWorkbook.SaveToHttpResponse(name, Response, HttpContentType.Excel2010);
+                }
+                else
+                {
+                    string name = "MDU_ALTERED_" + auth.currentuser.employee.firstname + "_" + auth.currentuser.employee.lastname + "_" + DateTime.Now.ToString("MMddyyyy") + ".xlsx";
+                    Workbook workbook = new Workbook();
+                    workbook.LoadFromFile(Server.MapPath("~/Template/MDUALTEREDTemplate.xlsx"));
+
+                    var EditWOrkbook = new Workbook();
+
+                    using (var stream = new MemoryStream())
+                    {
+                        workbook.SaveToStream(stream, FileFormat.Version2010);
+                        stream.Seek(0, SeekOrigin.Begin);
+                        EditWOrkbook.LoadFromStream(stream, ExcelVersion.Version2010);
+                    }
+                    EditWOrkbook.SaveToHttpResponse(name, Response, HttpContentType.Excel2010);
+
+
+                    //string tempname = "MDUALTEREDTemplate.xlsx";
+                    //string name = "MDU_ALTERED_" + auth.currentuser.employee.firstname + "_" + auth.currentuser.employee.lastname + "_" + DateTime.Now.ToString("MMddyyyy") + ".xlsx";
+
+                    //string filepath = Server.MapPath(string.Format("~/Template/{0}", tempname));
+
+                    //Response.ContentType = "application/vnd.ms-excel";
+                    //Response.AppendHeader("Content-Disposition", "attachment; filename=" + name);
+
+                    //Response.WriteFile(filepath);
+                    //Response.Flush();
+                    //Response.End();
+
+                }
             }
 
         }
@@ -539,10 +578,27 @@ namespace SimpleFFO.views
         }
         protected void btnGenerateExcel(object sender, EventArgs e)
         {
-            DisplayList(true);
+            DisplayList(true, 1);
+            //if (isPSR)
+            //{
+            //    DisplayList(true, 2);
+            //    auth.SaveLog("MD Universe","MDU Altered is Exported",1);
+            //}
+            //else
+            //{
+            //    DisplayList(true, 1);
+            //}
             //PageController.fnHideLoader(this, "panelloader");
         }
 
+        protected void btnMDU_click(object sender, EventArgs e)
+        {
+            PageController.fnFireEvent(this, PageController.EventType.click, btnexportmdufile.ClientID, true);
+        }
+        protected void btnGenerateMDUALT(object sender, EventArgs e)
+        {
+            DisplayList(true, 2);
+        }
         protected void lstforapproval_ItemDataBound(object sender, ListViewItemEventArgs e)
         {
             if (e.Item.ItemType == ListViewItemType.DataItem)
@@ -611,7 +667,7 @@ namespace SimpleFFO.views
                                         else
                                             idm.updatedbyid = auth.currentuser.employeeid;
                                     }
-                                    else if (idm.doctor.isactive  == true && idm.doctor.deleted_at != null)
+                                    else if (idm.doctor.isactive == true && idm.doctor.deleted_at != null)
                                     {
                                         if (isapprove)
                                             idm.doctor.isactive = false;
@@ -648,6 +704,7 @@ namespace SimpleFFO.views
         private bool ValidateDoctor()
         {
             bool isvalid;
+            string ErrorLOG;
             lblerrorlastname.Text = AppModels.ErrorMessage.required;
             isvalid = Validator.RequiredField(txtdoclastname);
             isvalid = Validator.RequiredField(txtdocfirstname) && isvalid;
@@ -655,7 +712,10 @@ namespace SimpleFFO.views
             {
                 if (doctorController.isNameExists(txtdoclastname.Text, txtdocfirstname.Text))
                 {
+                    ErrorLOG = "Adding Firstname: " + txtdocfirstname.Text + " Lastname: " + txtdoclastname.Text + " Already Exist!";
                     lblerrorlastname.Text = "Doctor already exist!";
+                    auth.SaveLog("Error Log", ErrorLOG, 1);
+                    //auth.MD_SAVE_ErrorLog(ErrorLOG);
                     Validator.SetError(txtdoclastname, true);
                     isvalid = false;
                 }

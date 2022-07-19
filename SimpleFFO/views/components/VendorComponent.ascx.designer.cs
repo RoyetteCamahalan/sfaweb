@@ -33,49 +33,22 @@ namespace SimpleFFO.views.components
         protected global::System.Web.UI.WebControls.Literal lblModalTitle;
 
         /// <summary>
-        /// chkIsactive control.
+        /// txtvendorname control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox chkIsactive;
+        protected global::System.Web.UI.WebControls.TextBox txtvendorname;
 
         /// <summary>
-        /// lblSupplierName control.
+        /// lblerrorvendorname control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblSupplierName;
-
-        /// <summary>
-        /// txtSupplierName control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtSupplierName;
-
-        /// <summary>
-        /// errtxtSupplierName control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal errtxtSupplierName;
-
-        /// <summary>
-        /// lbladdress control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lbladdress;
+        protected global::System.Web.UI.WebControls.Literal lblerrorvendorname;
 
         /// <summary>
         /// txtaddress control.
@@ -87,40 +60,31 @@ namespace SimpleFFO.views.components
         protected global::System.Web.UI.WebControls.TextBox txtaddress;
 
         /// <summary>
-        /// cmbsupplierbranches control.
+        /// txttelephone control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList cmbsupplierbranches;
+        protected global::System.Web.UI.WebControls.TextBox txttelephone;
 
         /// <summary>
-        /// chkvat control.
+        /// txtvatno control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox chkvat;
+        protected global::System.Web.UI.WebControls.TextBox txtvatno;
 
         /// <summary>
-        /// Label1 control.
+        /// cmbisvat control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label1;
-
-        /// <summary>
-        /// TextBox1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox1;
+        protected global::System.Web.UI.WebControls.DropDownList cmbisvat;
 
         /// <summary>
         /// btnCloseModalBottom control.

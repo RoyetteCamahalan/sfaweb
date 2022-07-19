@@ -1,4 +1,5 @@
-﻿using SimpleFFO.Controller;
+﻿using Newtonsoft.Json;
+using SimpleFFO.Controller;
 using SimpleFFO.Model;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,9 @@ namespace SimpleFFO.Views
         ProductController productController;
         VehicleController vehicleController;
         EmployeeController employeeController;
-        Auth auth; 
+        Auth auth;
+        List<Vendor> lstvendor;
+        FFOPettyCashWS.Service1 options;
 
         public string myPage
         {
@@ -40,6 +43,7 @@ namespace SimpleFFO.Views
             productController = new ProductController();
             vehicleController = new VehicleController();
             employeeController = new EmployeeController();
+            options = new FFOPettyCashWS.Service1();
             if (!Page.IsPostBack)
             {
                 myPage = (string)this.RouteData.Values["targetpage"];
@@ -47,6 +51,7 @@ namespace SimpleFFO.Views
                 LoadFilters();
                 DisplayList();
                 ImplementPrivileges();
+                webserviceresult();
             }
             else
             {
@@ -92,8 +97,10 @@ namespace SimpleFFO.Views
                     break;
                 case AppModels.Pages.pagesRepairShops:
                     up = auth.GetUserpriv(AppModels.Modules.repairshops);
-                    panelbtncreate.Visible = up.canadd ?? false;
-                    tbl_suppliers.Columns[4].Visible = up.canedit ?? false;
+                    //panelbtncreate.Visible = up.canadd ?? false;
+                    //tbl_suppliers.Columns[4].Visible = up.canedit ?? false;
+                    //tbl_suppliers.Columns[3].Visible = up.canedit ?? false;
+
                     hasaccess = (up.canadd ?? false) || (up.canedit ?? false);
                     break;
                 case AppModels.Pages.pageProducts:
@@ -132,7 +139,7 @@ namespace SimpleFFO.Views
         //        this.Bind();
         //    }
         }
-        private void DisplayList()
+        public void DisplayList()
         {
             switch (this.myPage)
             {
@@ -802,7 +809,7 @@ namespace SimpleFFO.Views
             LinkButton lb = (LinkButton)sender;
             if (this.myPage == AppModels.Pages.pagesRepairShops)
             {
-                ctlvendor.Edit(Convert.ToInt64(lb.CommandArgument));
+                //ctlvendor.Edit(Convert.ToInt64(lb.CommandArgument));
                 return;
             }
             this.lblModalTitle.Text = "Update Record";
@@ -1091,6 +1098,16 @@ namespace SimpleFFO.Views
             //    pageIndex++;
             //    this.Bind();
             //}
+        }
+
+        private void webserviceresult()
+        {
+            if(auth.currentuser.employee.employeetypeid != 222)
+            {
+                lstvendor = JsonConvert.DeserializeObject<List<Vendor>>(options.Download_Data(auth.GetToken(), FFOPettyCashWS.myTransactCode.CGetVendor, "0"));
+                supplierController.SaveVendors(lstvendor);
+            }
+        
         }
     }
 }

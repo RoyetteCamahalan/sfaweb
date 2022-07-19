@@ -235,10 +235,24 @@
                                     <p>User Trail</p>
                                 </a>
                             </li>
+                            <li class="nav-item" id="navitemerrorlogs" runat="server">
+                                <a href='<%=GetRouteUrl(AppModels.Routes.errorlogs,null) %>' class="nav-link">
+                                    <i class="nav-icon fas fa-list"></i>    
+                                    <p>Error Logs</p>
+                                </a>
+                            </li>
+
+
                             <li class="nav-item" id="Li1" runat="server">
                                 <a href='<%= GetRouteUrl(AppModels.Routes.mobileapps, null) %>' class="nav-link">
                                     <i class="nav-icon fab fa-android"></i>
                                     <p>Get Mobile App</p>
+                                </a>
+                            </li>
+                            <li class="nav-item" id="Li2" runat="server">
+                                <a href="http://124.105.87.57:8086/login.php" target="_blank" class="nav-link">
+                                    <i class="nav-icon fas fa-business-time"></i>
+                                    <p>Help Desk</p>
                                 </a>
                             </li>
                         </ul>

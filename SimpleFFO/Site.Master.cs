@@ -51,7 +51,7 @@ namespace SimpleFFO
                 navitemloa.Visible = up.canrequest ?? false;
 
                 up = auth.GetUserpriv(AppModels.Modules.salaryloan);
-                navitemsalaryloan.Visible = up.canrequest ?? false;                
+                navitemsalaryloan.Visible = up.canrequest ?? false;
 
                 up = auth.GetUserpriv(AppModels.Modules.vehiclerepair);
                 navitemvehiclerepair.Visible = up.canrequest ?? false;
@@ -102,6 +102,9 @@ namespace SimpleFFO
                 usp = auth.GetSubUserpriv(AppModels.SubModules.userlogs);
                 navitemusertrails.Visible = usp.canaccess ?? false;
 
+                usp = auth.GetSubUserpriv(AppModels.SubModules.errorlogs);
+                navitemerrorlogs.Visible = usp.canaccess ?? false;
+
                 paneluserprofile.Visible = true;
                 navheaderlogout.Visible = true;
             }
@@ -131,6 +134,7 @@ namespace SimpleFFO
                 navitemsfareports.Visible = false;
                 paneluserprofile.Visible = false;
                 navheaderlogout.Visible = false;
+                navitemerrorlogs.Visible = false;
             }
         }
 
@@ -147,7 +151,7 @@ namespace SimpleFFO
             ReportDashBoard reportDashBoard = new ReportDashBoard();
             DataTable dt = reportDashBoard.GetResultReport(0, 38, 0, 0, 0, auth.currentuser.employeeid ?? 0, 1990, 0, isactive: 2, mdtype: 0);
 
-                int totalcount = 0;
+            int totalcount = 0;
             foreach (DataRow row in dt.Rows)
             {
                 totalcount += Convert.ToInt32(row["totalcount"]);
@@ -164,7 +168,7 @@ namespace SimpleFFO
 
         private void whatsNew()
         {
-            if (auth.currentuser == null || Convert.ToInt32(SessionController.getSession(SessionController.SesssionKeys.showupdates) ?? 0)==0)
+            if (auth.currentuser == null || Convert.ToInt32(SessionController.getSession(SessionController.SesssionKeys.showupdates) ?? 0) == 0)
                 return;
 
             MainController mainController = new MainController();

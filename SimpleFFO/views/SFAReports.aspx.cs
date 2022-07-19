@@ -239,7 +239,6 @@ namespace SimpleFFO.views
                     int specializationid = Convert.ToInt32(cmbspecialization.SelectedValue);
                     dt = reportDashBoard.GetResultReport(0, 8, branch_id, rbdmid, districtmanagerid, warehouseid, selectedyear, cyclenumber, isexport: true, specializationid: specializationid);
                     LoadCyclePerformanceReport(dt);
-                    LoadCyclePerformanceReport(dt);
                     break;
                 case AppModels.SFAReports.jointcalls:
                     dt = reportDashBoard.GetResultReport(0, 35, branch_id, rbdmid, districtmanagerid, warehouseid, selectedyear, cyclenumber, isexport: true);
@@ -252,6 +251,21 @@ namespace SimpleFFO.views
                     tbl_jointcalls.DataSource = dt;
                     tbl_jointcalls.Visible = true;
                     tbl_jointcalls.DataBind();
+                    break;
+                case AppModels.SFAReports.receiving:
+                    dt = reportDashBoard.GetResultReport(0, 43, branch_id, rbdmid, districtmanagerid, warehouseid, selectedyear, cyclenumber,true,false);
+                    panelreceivingperpsr.Visible = true;
+                    lst_receiving.Visible = true;
+                    lst_receiving.Bind(dt);
+                    lst_receiving.searchFields = new string[] { "product_name" };
+                    break;
+                case AppModels.SFAReports.dispense:
+                    dt = reportDashBoard.GetResultReport(0, 44, branch_id, rbdmid, districtmanagerid, warehouseid, selectedyear, cyclenumber, true, false);
+                    panelcallmaterialsperpsr.Visible = true;
+                    lst_callmaterials.Visible = true;
+                    lst_callmaterials.Bind(dt);
+                    lst_callmaterials.searchFields = new string[] { "name" };
+
                     break;
 
             }
@@ -1261,7 +1275,24 @@ namespace SimpleFFO.views
                     btnloadinit.Visible = true;
                     btnexportinit.Visible = true;
                     panelspecialization.Visible = true;
-                    cmbpsr_SelectedIndexChanged(cmbpsr, null);
+                    
+                    employee info = employeeController.GetEmployee(Convert.ToInt64(cmbpsr.SelectedValue));
+
+                    List<GenericObject> result = doctorController.GetSpecializationPerWarehouse(0);
+                    result = result.Prepend(new GenericObject { specialization_id = 0, name = "Select a psr first" }).ToList();
+                    cmbspecialization.DataSource = result;
+                    cmbspecialization.DataTextField = "name";
+                    cmbspecialization.DataValueField = "specialization_id";
+                    cmbspecialization.DataBind();
+
+                    //cmbpsr_SelectedIndexChanged(cmbpsr, null);
+                    break;
+
+                case AppModels.SFAReports.receiving:
+                    btnexportinit.Visible = false;
+                    break;
+                case AppModels.SFAReports.dispense:
+                    btnexportinit.Visible = false;
                     break;
                 default:
                     btnloadinit.Visible = true;
@@ -1278,6 +1309,10 @@ namespace SimpleFFO.views
             lst_performancereport.Visible = false;
             tbl_performanceperclass.Visible = false;
             tbl_cyclespecializationreport.Visible = false;
+            panelreceivingperpsr.Visible = false;
+            lst_receiving.Visible = false;
+            panelcallmaterialsperpsr.Visible = false;
+            lst_callmaterials.Visible = false;
             upanelgrids.Update();
         }
 
@@ -1293,6 +1328,10 @@ namespace SimpleFFO.views
             panelcallperformanceperpsr.Visible = false;
             lst_performancereport.Visible = false;
             tbl_performanceperclass.Visible = false;
+            panelreceivingperpsr.Visible = false;
+            panelcallmaterialsperpsr.Visible = false;
+            lst_callmaterials.Visible = false;
+            lst_receiving.Visible = false;
             upanelgrids.Update();
             PageController.fnShowLoader(this, "panelloader");
             PageController.fnFireEvent(this, PageController.EventType.click, ButtonLoad.ClientID, true);
@@ -1330,14 +1369,11 @@ namespace SimpleFFO.views
                         panelpreviewunavailable.Visible = false;
                         btnloadinit.Visible = true;
                         btnexportinit.Visible = true;
+
                         employee info = employeeController.GetEmployee(Convert.ToInt64(cmbpsr.SelectedValue));
-                        //DataTable dt = reportDashBoard.GetResultReport(0, 5,(long)info.branchid, 0, 0, (long)info.warehouseid, Convert.ToInt32(cmbyear.SelectedValue), 1, 0);
-                        //cmbspecialization.DataSource = dt;
-                        //cmbspecialization.DataTextField = "name";
-                        //cmbspecialization.DataValueField = "specialization_id";
-                        //cmbspecialization.DataBind();
-                        List<GenericObject> result = doctorController.GetSpecializationPerWarehouse((long)info.warehouseid);
-                        result = result.Prepend(new GenericObject { specialization_id = 0, name = "All Specialization" }).ToList();
+
+                        List<GenericObject> result = doctorController.GetSpecializationPerWarehouse(info == null ? 0 : (long)info.warehouseid);
+                        result = result.Prepend(new GenericObject { specialization_id = 0, name = "All specialization" }).ToList();
                         cmbspecialization.DataSource = result;
                         cmbspecialization.DataTextField = "name";
                         cmbspecialization.DataValueField = "specialization_id";
@@ -1380,6 +1416,16 @@ namespace SimpleFFO.views
             ((Literal)lst.FindControl("lst_performancereport_m1")).Text = result.AddMonths(-2).ToString("MMMM yyyy");
             ((Literal)lst.FindControl("lst_performancereport_m2")).Text = result.AddMonths(-1).ToString("MMMM yyyy");
             ((Literal)lst.FindControl("lst_performancereport_m3")).Text = result.ToString("MMMM yyyy");
+        }
+
+        protected void lst_receiving_layoutCreated(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void lst_callmaterials_layoutCreated(object sender,EventArgs e)
+        {
+
         }
     }
 

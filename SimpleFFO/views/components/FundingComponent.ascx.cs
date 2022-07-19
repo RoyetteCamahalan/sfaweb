@@ -1,11 +1,14 @@
-﻿using SimpleFFO.Controller;
+﻿using Newtonsoft.Json;
+using SimpleFFO.Controller;
 using SimpleFFO.Model;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+
 
 namespace SimpleFFO.views.components
 {
@@ -13,7 +16,19 @@ namespace SimpleFFO.views.components
     {
         FundController fundController;
         ApprovalController approvalController;
+        SupplierController supplierController;
+
+        DoctorController doctorController;
+        InstitutionController institutionController;
+        PRActivityController practivitycontroller;
+        TieupController tieupcontroller;
+        ExpenseReportController expenseReportcontroller;
+
+
         Auth auth;
+        List<Vendor> lstvendor;
+        FFOPettyCashWS.Service1 options;
+
         private int moduleId
         {
             get { return (int)ViewState["moduleId"]; }
@@ -44,7 +59,7 @@ namespace SimpleFFO.views.components
             get => (Session["pageSessionState"] ?? "").ToString();
             set => Session["pageSessionState"] = value;
         }
-        public void Bind(int moduleId, long requestId, long warehouseId ,decimal totalBudget)
+        public void Bind(int moduleId, long requestId, long warehouseId, decimal totalBudget)
         {
             this.moduleId = moduleId;
             this.requestId = requestId;
@@ -54,6 +69,7 @@ namespace SimpleFFO.views.components
             init();
             LoadFundRequest();
             LoadFundLiquidation();
+            webserviceresult();
             PageController.fnScroll(this.Page, panelfundrequest.ClientID, false, false);
         }
         private void init()
@@ -61,6 +77,15 @@ namespace SimpleFFO.views.components
             auth = new Auth(this.Page);
             fundController = new FundController();
             approvalController = new ApprovalController();
+            supplierController = new SupplierController();
+
+            doctorController = new DoctorController();
+            institutionController = new InstitutionController();
+            practivitycontroller = new PRActivityController();
+            tieupcontroller = new TieupController();
+            expenseReportcontroller = new ExpenseReportController();
+
+            options = new FFOPettyCashWS.Service1();
         }
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -117,7 +142,7 @@ namespace SimpleFFO.views.components
             lbltotalfundreleased.Text = (lstrequest.Where(r => r.status == AppModels.Status.completed).Select(r => r.amount).DefaultIfEmpty(0).Sum() ?? 0).ToString(AppModels.moneyformat);
             lbltotalfundrequested.Text = (lstrequest.Where(r => r.status != AppModels.Status.rejected).Select(r => r.amount).DefaultIfEmpty(0).Sum() ?? 0).ToString(AppModels.moneyformat);
             lblfundbudget.Text = this.totalBudget.ToString(AppModels.moneyformat);
-            if(this.moduleId == AppModels.Modules.expensereport)
+            if (this.moduleId == AppModels.Modules.expensereport)
             {
                 btnaddfundrequest.Visible = false;
                 panelrequestheader.Visible = false;
@@ -223,6 +248,7 @@ namespace SimpleFFO.views.components
                 st.statusid = AppModels.Status.completed;
                 st.remarks = f.disbursementremarks;
                 st.traildate = DateTime.Now;
+                postwebserviceresultFundreq(f);
                 fundController.SaveChanges();
                 approvalController.SaveTrail(st);
                 LoadFundRequest();
@@ -338,7 +364,7 @@ namespace SimpleFFO.views.components
                 cmbdisburmentmode.DataTextField = "value";
                 cmbdisburmentmode.DataValueField = "key";
                 cmbdisburmentmode.DataBind();
-                cmbdisburmentmode.SelectedValue = paymentmode.ToString();
+                 cmbdisburmentmode.SelectedValue = paymentmode.ToString();
                 txtdisbursementdate.Text = Utility.getServerDate().ToString(AppModels.dateformat);
                 txtdisbursementreference.Text = "";
                 txtdisbursementremarks.Text = "";
@@ -392,9 +418,11 @@ namespace SimpleFFO.views.components
                     fundliquidation f = fundController.GetFundLiquidation(st.requestid ?? 0);
                     f.status = st.statusid;
                     f.endorsedto = st.employeeid;
+                    postwebserviceLiq(f);
                     fundController.SaveChanges();
                     LoadFundLiquidation();
                     upanelfunliquidationdashboard.Update();
+
                 }
                 st.employeeid = auth.currentuser.employeeid;
                 approvalController.SaveTrail(st);
@@ -428,6 +456,7 @@ namespace SimpleFFO.views.components
         }
         protected void btnaddfundliquidation_Click(object sender, EventArgs e)
         {
+
             panelfundliqidationentry.Visible = true;
             panelfundliqidationentry.CssClass = panelfundliqidationentry.CssClass.Replace(" collapsed-card", "");
             txtdatesubmitted.Text = DateTime.Now.ToString(AppModels.dateformat);
@@ -466,6 +495,7 @@ namespace SimpleFFO.views.components
                 decimal totalreleased = requests.Where(r => r.status == AppModels.Status.completed).Select(r => r.amount).DefaultIfEmpty(0).Sum() ?? 0;
                 decimal totalliquidation = liquidations.Where(r => r.status != AppModels.Status.rejected).Select(r => r.amount).DefaultIfEmpty(0).Sum() ?? 0;
                 decimal currentliquidation = Convert.ToDecimal(txtfundliquidationamount.Text);
+                int isvat = Convert.ToInt32(cmbisvatliq.SelectedValue);
                 errortxtfundliquidationamount.Text = "Amount must not exceed for liquidation amount!";
                 if ((totalreleased - totalliquidation) < currentliquidation)
                 {
@@ -495,6 +525,9 @@ namespace SimpleFFO.views.components
                     liq.status = AppModels.Status.submitted;
                     liq.amount = Convert.ToDecimal(txtfundliquidationamount.Text);
                     liq.receiptimagepath = literalimagefilename.Text;
+                    liq.isvat = Convert.ToBoolean(isvat);
+                    liq.referenceno = txtfundliquidationrefno.Text;
+                    liq.referencedate = Convert.ToDateTime(txtreferencedate.Text);
                     fundController.SaveFundLiquidation(true, liq);
                     panelfundliqidationentry.Visible = false;
                     panelfundliqidationentry.CssClass = panelfundliqidationentry.CssClass.Replace(" collapsed-card", "");
@@ -506,6 +539,48 @@ namespace SimpleFFO.views.components
             }
             upanelfundliquidation.Update();
         }
+        protected void btnaddvendor_click(object sender, EventArgs e)
+        {
+            PageController.fnFireEvent(this.Page, PageController.EventType.click, "btnopenvenmodal", true);
+            upanelmodel.Update();
+        }
+
+        protected void SubmitVendor(object sender, EventArgs e)
+        {
+            init();
+            if (Convert.ToInt32(cmbisvat.SelectedValue) > 0)
+            {
+                var vendObj = new VendorObject();
+                vendObj.Vendor = new List<Vendor>();
+
+                var gathered = new Vendor()
+                {
+                    dateencoded = DateTime.Now.ToString("MM/dd/yyyy"),
+                    Vendorname = txtvendorname.Text,
+                    address = txtaddress.Text,
+                    telephone = txttelephone.Text,
+                    vatno = txtvatno.Text,
+                    vat = VendorValidation(),
+                    VendorCategoryId = 1
+                };
+
+                vendObj.Vendor.Add(gathered);
+
+                string finalResponse = JsonConvert.SerializeObject(vendObj);
+                options.Upload_Data(auth.GetToken(),FFOPettyCashWS.myTransactCode.CPostVendor,finalResponse);
+                PageController.fnShowAlert(this.Page, PageController.AlertType.success, "Record Successfully Updated");
+                PageController.fnFireEvent(this.Page, PageController.EventType.click, "btnopenvenmodal", true);
+                webserviceresult();
+            }
+        }
+        private bool VendorValidation()
+        {
+            if (Convert.ToInt32(cmbisvat.SelectedValue) == 1)
+                return true;
+            return false;
+        }
+
+
         protected void btnUpload_Click(object sender, EventArgs e)
         {
             init();
@@ -531,6 +606,172 @@ namespace SimpleFFO.views.components
             catch (Exception)
             {
 
+            }
+        }
+        private void webserviceresult()
+        {
+            try
+            {
+                if (auth.currentuser.employee.employeetypeid != 222)
+                {
+                    lstvendor = JsonConvert.DeserializeObject<List<Vendor>>(options.Download_Data(auth.GetToken(), FFOPettyCashWS.myTransactCode.CGetVendor, "0"));
+                    supplierController.SaveVendors(lstvendor);
+                }
+
+                cmbvendors.DataSource = supplierController.GetLiquidationSupplier();
+                cmbvendors.DataTextField = "suppliername";
+                cmbvendors.DataValueField = "supplierno";
+                cmbvendors.DataBind();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+        }
+
+        private void postwebserviceLiq(fundliquidation fl)
+        {
+            try
+            {
+                var liqobj = new FundliquidationsObject();
+                liqobj.FundLiquidations = new List<Fundliquidations>();
+
+                var gathered = new Fundliquidations()
+                {
+                    dateencoded = DateTime.Now.ToString("MM/dd/yyyy"),
+                    vendorid = 0, //default
+                    expenseid = 0, // default 
+                    refno = fl.referenceno,
+                    refdate = Convert.ToDateTime(fl.referencedate).ToString("MM/dd/yyyy"),
+                    amount = Convert.ToString(fl.amount),
+                    vat = Convert.ToBoolean(fl.isvat),
+                    remarks = fl.remarks,
+                    ffo_flid = fl.fundliquidationid,
+                    ffo_frid = Convert.ToInt64(fl.requestid),
+                };
+                liqobj.FundLiquidations.Add(gathered);
+                string finalResponse = JsonConvert.SerializeObject(liqobj);
+                options.Upload_Data(auth.GetToken(), FFOPettyCashWS.myTransactCode.CPostFundLiquidation, finalResponse);
+            }
+            catch(Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+            
+        }
+
+        private void postwebserviceresultFundreq(fundrequest f) 
+        {
+            try
+            {
+                if(moduleId != 206)
+                {
+                    practivity practivity;
+                    tieup tieup;
+                    doctor doctor;
+                    institution institution;
+
+                    int fundtype = 0;
+                    int inst_id = 0;
+                    int doc_id = 0;
+
+                    string doc_name = "";
+                    string inst_name = "";
+
+
+                    if (moduleId == 201)
+                    {
+                        fundtype = 1;
+                        practivity = practivitycontroller.GetPRActivity((long)f.requestid);
+                        doc_id = practivity.doc_id ?? 0;
+                        inst_id = practivity.inst_id ?? 0;
+
+                        doctor = doctorController.GetDoctor(doc_id);
+                        institution = institutionController.getInstitution(inst_id);
+
+                        doc_name = doctor.doc_firstname + " " + doctor.doc_lastname;
+                        inst_name = institution.inst_name;
+
+                    }
+                    else if (moduleId == 202)
+                    {
+                        fundtype = 2;
+                        tieup = tieupcontroller.GetTieup((long)f.requestid);
+                        doc_id = Convert.ToInt32(tieup.doc_id);
+                        inst_id = Convert.ToInt32(tieup.inst_id);
+
+                        doctor = doctorController.GetDoctor(doc_id);
+                        institution = institutionController.getInstitution(inst_id);
+
+                        doc_name = doctor.doc_firstname + " " + doctor.doc_lastname;
+                        inst_name = institution.inst_name;
+                    }
+                    else if (moduleId == 203)
+                    {
+                        fundtype = 3;
+                        tieup = tieupcontroller.GetTieup((long)f.requestid);
+                        doc_id = Convert.ToInt32(tieup.doc_id);
+                        inst_id = Convert.ToInt32(tieup.inst_id);
+
+                        doctor = doctorController.GetDoctor(doc_id);
+                        institution = institutionController.getInstitution(inst_id);
+
+                        doc_name = doctor.doc_firstname + " " + doctor.doc_lastname;
+                        inst_name = institution.inst_name;
+                    }
+
+                    if (f.paymentmode == 0)
+                    {
+                        f.disbursementref = "";
+                        f.disbursementdate = new DateTime(1900, 1, 1);
+
+                    }
+
+
+                    var fundobj = new FundreleasedObject();
+                    fundobj.Fundreleaseds = new List<Fundreleased>();
+
+                    var gathered = new Fundreleased()
+                    {
+                        dateencoded = DateTime.Now.ToString("MM/dd/yyyy"),
+                        frid_ffo = f.fundrequestid,
+                        payeeid = doc_id,
+                        payee = doc_name,
+                        institutionid = inst_id,
+                        institutionname = inst_name,
+                        mode = Convert.ToInt32(f.paymentmode),
+                        tuprefno = "N/A", // default
+                        fundtypeid = fundtype,
+                        checkno = f.disbursementref,
+                        checkdate = Convert.ToDateTime(f.disbursementdate).ToString("MM/dd/yyyy"),
+                        amount = f.amount.ToString(),
+                        remarks = f.disbursementremarks
+                    };
+                    fundobj.Fundreleaseds.Add(gathered);
+                    string finalResponse = JsonConvert.SerializeObject(fundobj);
+                    options.Upload_Data(auth.GetToken(), FFOPettyCashWS.myTransactCode.CPostFundReleased, finalResponse);
+                }
+                else
+                {
+                    var fundobj = new FundreleasedcashTransferObj();
+                    fundobj.Fundreleaseds = new List<FundreleasedcashTransfer>();
+
+                    var gathered = new FundreleasedcashTransfer()
+                    {
+                        dateencoded = DateTime.Now.ToString("MM/dd/yyyy"),
+                        amount = f.amount.ToString(),
+                        remarks = f.disbursementremarks,
+                        ffo_fundreleasedid = f.fundrequestid
+                    };
+                    fundobj.Fundreleaseds.Add(gathered);
+                    string finalResponse = JsonConvert.SerializeObject(fundobj);
+                    options.Upload_Data(auth.GetToken(), FFOPettyCashWS.myTransactCode.CPostFundReleasedCashTransfer, finalResponse);
+                }
+                
+            }
+            catch(Exception ex)
+            {
+                Debug.WriteLine(ex);
             }
         }
 

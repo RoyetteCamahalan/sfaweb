@@ -20,6 +20,7 @@ namespace SimpleFFO.Model
         {
             this.practivityoutcomes = new HashSet<practivityoutcome>();
             this.tieupproducts = new HashSet<tieupproduct>();
+            this.receivings = new HashSet<receiving>();
         }
     
         public int product_id { get; set; }
@@ -42,5 +43,7 @@ namespace SimpleFFO.Model
         public virtual packaging packaging { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tieupproduct> tieupproducts { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<receiving> receivings { get; set; }
     }
 }

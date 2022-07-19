@@ -1,7 +1,9 @@
-﻿using SimpleFFO.Controller;
+﻿using Newtonsoft.Json;
+using SimpleFFO.Controller;
 using SimpleFFO.Model;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -20,6 +22,8 @@ namespace SimpleFFO.views.components
         FundController fundController;
         VehicleRepairController vehicleRepairController;
         Auth auth;
+        FFOPettyCashWS.Service1 options;
+
         private GenericObject approvalaction
         {
             get { return (GenericObject)ViewState["approvalaction"]; }
@@ -73,6 +77,8 @@ namespace SimpleFFO.views.components
             salaryLoanController = new SalaryLoanController();
             fundController = new FundController();
             vehicleRepairController = new VehicleRepairController();
+            options = new FFOPettyCashWS.Service1();
+
         }
 
         protected void Page_Load(object sender, EventArgs e)
@@ -174,7 +180,10 @@ namespace SimpleFFO.views.components
                             er.endorsedto = this.approvalaction.endorsenext;
                         expenseReportController.SaveChanges();
                         if (er.status == AppModels.Status.approved)
+                        {
                             fundController.GetFundRequests(this.moduleId, this.requestId, er.warehouseid ?? 0);
+                            postexpensereport(this.requestId);
+                        }
                         break;
 
                     case AppModels.Modules.leaverequest:
@@ -202,7 +211,7 @@ namespace SimpleFFO.views.components
                         {
                             vehiclerepair v = vehicleRepairController.GetVehiclerepair(this.requestId);
                             v.status = requestStatus;
-                            v.supplierno = this.supplierNo;
+                            //v.supplierno = this.supplierNo;
                             v.totalamount = this.totalAmount;
                             if (v.status == AppModels.Status.rejected)
                                 v.endorsedto = null;
@@ -226,6 +235,39 @@ namespace SimpleFFO.views.components
                 }
             }
             upanelactions.Update();
+        }
+
+        private void postexpensereport(long expensereportid)
+        {
+            List<expensereportmiscellaneou> lst = expenseReportController.GetpostExpMisc(expensereportid);
+            try
+            {
+                var misobj = new ExpenseReportObject();
+                misobj.ExpenseReportPost = new List<PostExpenseReports>();
+
+                foreach (var gathered in lst)
+                {
+                    var store = new PostExpenseReports()
+                    {
+                        dateencoded = gathered.expensedate,
+                        vendorid = (long)gathered.vendorid,
+                        expenseid = (long)gathered.misccodeid,
+                        refno = gathered.referenceno,
+                        refdate = gathered.expensedate,
+                        amount = gathered.amount,
+                        vat = gathered.isvat,
+                        remarks = gathered.particulars,
+                        ffo_expensereportid = gathered.miscexpenseid
+                    };
+                    misobj.ExpenseReportPost.Add(store);
+                }
+                string Serialize = JsonConvert.SerializeObject(misobj);
+                options.Upload_Data(auth.GetToken(),FFOPettyCashWS.myTransactCode.CPostExpenseReport,Serialize);
+            }
+            catch(Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
         }
     }
 }

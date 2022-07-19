@@ -24,7 +24,7 @@ namespace SimpleFFO
             RouteTable.Routes.MapPageRoute(AppModels.Routes.sfareports, "sfareports", "~/views/SFAReports.aspx");
             RouteTable.Routes.MapPageRoute(AppModels.Routes.sfareportspsrperformance, "sfareportspsrperformance/{employeeid}/{year}/{cyclenumber}", "~/views/SFAReports.aspx");
             RouteTable.Routes.MapPageRoute(AppModels.Routes.calldetails, "calldetails/{id}", "~/views/CallReportDetailInfo.aspx");
-            RouteTable.Routes.MapPageRoute(AppModels.Routes.dailysyncdetails, "dailysyncdetails/{employeeid}/{date}", "~/views/CallSyncReportInfo.aspx"); 
+            RouteTable.Routes.MapPageRoute(AppModels.Routes.dailysyncdetails, "dailysyncdetails/{employeeid}/{date}", "~/views/CallSyncReportInfo.aspx");
 
             //Request
             RouteTable.Routes.MapPageRoute(AppModels.Routes.requestpractivity, "request/practivity", "~/views/PRActivity.aspx");
@@ -69,9 +69,8 @@ namespace SimpleFFO
             RouteTable.Routes.MapPageRoute(AppModels.Routes.jointcalls, "callid/{id}", "~/views/JointCallinfo.aspx");
             RouteTable.Routes.MapPageRoute(AppModels.Routes.institutiondoctors, "institutiondoctors", "~/views/InstitutionDoctors.aspx");
             RouteTable.Routes.MapPageRoute(AppModels.Routes.usertrails, "usertrails", "~/views/UserLogs.aspx");
+            RouteTable.Routes.MapPageRoute(AppModels.Routes.errorlogs, "errorlogs", "~/views/ErrorLogs.aspx");
             RouteTable.Routes.MapPageRoute(AppModels.Routes.mobileapps, "mobileapps", "~/views/MobileApps.aspx");
-
-            
         }
     }
 }

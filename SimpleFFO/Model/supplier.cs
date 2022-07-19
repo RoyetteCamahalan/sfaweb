@@ -19,7 +19,6 @@ namespace SimpleFFO.Model
         public supplier()
         {
             this.vehiclerepairdetails = new HashSet<vehiclerepairdetail>();
-            this.vehiclerepairs = new HashSet<vehiclerepair>();
         }
     
         public long supplierno { get; set; }
@@ -29,14 +28,12 @@ namespace SimpleFFO.Model
         public Nullable<long> updatedbyid { get; set; }
         public Nullable<System.DateTime> updated_at { get; set; }
         public Nullable<System.DateTime> deleted_at { get; set; }
-        public Nullable<bool> isactive { get; set; }
-        public Nullable<bool> isrepairshop { get; set; }
+        public Nullable<int> isactive { get; set; }
+        public Nullable<int> vendorcategoryid { get; set; }
         public Nullable<long> branchid { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<vehiclerepairdetail> vehiclerepairdetails { get; set; }
         public virtual branch branch { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<vehiclerepair> vehiclerepairs { get; set; }
     }
 }

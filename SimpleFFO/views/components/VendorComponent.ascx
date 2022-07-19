@@ -9,45 +9,66 @@
 
                         <div class="modal-header">
                             <h4 class="modal-title">
-                                <asp:Literal ID="lblModalTitle" runat="server">New Record</asp:Literal></h4>
+                                <asp:Literal ID="lblModalTitle" runat="server">New Shop</asp:Literal></h4>
                             <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
                         </div>
-                        <div class="modal-body">
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <div class="form-check float-right">
-                                        <asp:CheckBox ID="chkIsactive" runat="server" CssClass="form-check-input" />
-                                        <label class="form-check-label" for="chkisactive">Is Active?</label>
+                       <div class="modal-body">
+                        <div class="row">
+
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="txtvendorname">Vendor name <span class="required">*</span></label>
+                                    <asp:TextBox ID="txtvendorname" runat="server" CssClass="form-control rounded-0"></asp:TextBox>
+                                    <span class="error invalid-feedback">
+                                        <asp:Literal ID="lblerrorvendorname" runat="server"></asp:Literal></span>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <div class="form-group">
+                                        <label for="txtaddress">Address <span class="required">*</span></label>
+                                        <asp:TextBox ID="txtaddress" runat="server" CssClass="form-control rounded-0"></asp:TextBox>
+                                        <span class="error invalid-feedback"><%= AppModels.ErrorMessage.required %></span>
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <asp:Label ID="lblSupplierName" runat="server" AssociatedControlID="txtSupplierName">Vendor Name 
-                                                <span class="required">*</span></asp:Label>
-                                <asp:TextBox ID="txtSupplierName" runat="server" CssClass="form-control rounded-0" required="required"></asp:TextBox>
-                                <span class="error invalid-feedback">
-                                    <asp:Literal ID="errtxtSupplierName" runat="server"></asp:Literal></span>
-                            </div>
-                            <div class="form-group">
-                                <asp:Label ID="lbladdress" runat="server" AssociatedControlID="txtaddress">Address
-                                                <span class="required">*</span></asp:Label>
-                                <asp:TextBox ID="txtaddress" runat="server" CssClass="form-control rounded-0" required="required"></asp:TextBox>
-                            </div>
-                            <div class="form-group">
-                                <label for="cmbwarehousebranches">Branch <span class="required">*</span></label>
-                                <asp:DropDownList ID="cmbsupplierbranches" runat="server" CssClass="custom-select rounded-0" TabIndex="-1">
-                                </asp:DropDownList>
-                                <span class="error invalid-feedback"><%= AppModels.ErrorMessage.required %></span>
-                            </div>
-                                <div class="form-check float-right">
-                                    <asp:CheckBox ID="chkvat" runat="server" CssClass="form-check-input" />
-                                    <label class="form-check-label" for="chkvat">Is Vat?</label>
-                                </div>
-                                <div class="form-group">
-                                    <asp:Label ID="Label1" runat="server" AssociatedControlID="txtaddress">T.I.N</asp:Label>
-                                    <asp:TextBox ID="TextBox1" runat="server" CssClass="form-control rounded-0" required="required" data-inputmask='"mask": "999-999-999-999"' data-mask></asp:TextBox>
-                                </div>
                         </div>
+                        <div class="row">
+
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="txttelephone">Telephone <span class="required">*</span></label>
+                                    <asp:TextBox ID="txttelephone" runat="server" CssClass="form-control rounded-0"></asp:TextBox>
+                                    <span class="error invalid-feedback"><%= AppModels.ErrorMessage.required %></span>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="txtvatno">Vat number <span class="required">*</span></label>
+                                    <asp:TextBox ID="txtvatno" runat="server" CssClass="form-control rounded-0"></asp:TextBox>
+                                    <span class="error invalid-feedback"><%= AppModels.ErrorMessage.required %></span>
+                                </div>
+                            </div>
+
+
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <div class="form-group">
+                                        <label for="txtvar">is vat? <span class="required">*</span></label>
+                                        <asp:DropDownList ID="cmbisvat" runat="server" CssClass="custom-select rounded-0" TabIndex="-1"
+                                             AppendDataBoundItems="true">
+                                            <asp:ListItem Selected="True" Value="0" Text="--Select--"></asp:ListItem>
+                                            <asp:ListItem Selected="False" Value="1" Text="VAT"></asp:ListItem>
+                                            <asp:ListItem Selected="False" Value="2" Text="Non-VAT"></asp:ListItem>
+                                        </asp:DropDownList>
+                                        <span class="error invalid-feedback"><%= AppModels.ErrorMessage.required %></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                         <div class="modal-footer justify-content-between">
                             <asp:Button ID="btnCloseModalBottom" runat="server" CssClass="btn btn-default" data-dismiss="modal" UseSubmitBehavior="false" CausesValidation="false" Text="Close" />
                             <asp:Button ID="btnSave" runat="server" CssClass="btn btn-primary" UseSubmitBehavior="false"

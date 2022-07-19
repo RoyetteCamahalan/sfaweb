@@ -254,7 +254,7 @@ namespace SimpleFFO.views
                 btnTagasCancelled.Visible = true;
             }
             ctlStatusTrail.Bind(this.moduleid, this.vehiclerepairid, v.status ?? 0);
-            ctlStatusTrail.supplierNo = v.supplierno ?? 0;
+            //ctlStatusTrail.supplierNo = v.supplierno ?? 0;
             ctlStatusTrail.totalAmount = v.totalamount ?? 0;
             LoadGrid();
             GetSubTotal();

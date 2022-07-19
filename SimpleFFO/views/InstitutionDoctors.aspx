@@ -66,8 +66,13 @@
                                         <div style="position: absolute; right:0; bottom:0;">
                                             <asp:Button ID="ButtonLoad" runat="server" Text=" Load Data" CssClass="btn btn-info btn-flat float-right" Style="margin-right: 5px; display: none" OnClick="btnLoadData" />
                                             <asp:Button ID="btnloadinit" runat="server" Text=" Load Data" CssClass="btn btn-info btn-flat float-right" Style="margin-right: 5px;" OnClick="btnloadinit_Click"/>
+                                           
                                             <asp:Button ID="btnexportinit" runat="server" Text=" Export to Excel" CssClass="btn btn-info btn-flat float-right" Style="margin-right: 5px;" OnClick="btnexportinit_Click" />
                                             <asp:Button ID="btnexportfile" runat="server" Text=" Export to Excel" CssClass="btn btn-info btn-flat float-right" Style="margin-right: 5px; display: none" OnClick="btnGenerateExcel" />
+
+                                            <asp:Button ID="btnexportmduinit" runat="server" Text=" Export MDU Altered " CssClass="btn btn-info btn-flat float-right" Style="margin-right: 5px;" OnClick="btnMDU_click"/>
+                                            <asp:Button ID="btnexportmdufile" runat="server" Text=" Export MDU Altered " CssClass="btn btn-info btn-flat float-right" Style="margin-right: 5px; display: none" OnClick="btnGenerateMDUALT" />
+
                                         </div>
                                     </div>
                                 </div>
@@ -77,8 +82,9 @@
                                 <asp:AsyncPostBackTrigger ControlID="cmbbbdm" />
                                 <asp:AsyncPostBackTrigger ControlID="cmbpsr" />
                                 <asp:AsyncPostBackTrigger ControlID="ButtonLoad" />
-                                <asp:AsyncPostBackTrigger ControlID="btnloadinit" />
+                                <asp:AsyncPostBackTrigger ControlID="btnloadinit" />        
                                 <asp:AsyncPostBackTrigger ControlID="btnexportinit" />
+                                <asp:AsyncPostBackTrigger ControlID="btnexportmduinit" />
                             </Triggers>
                         </asp:UpdatePanel>
 
@@ -470,7 +476,7 @@
             $('.select2').select2({
                 width: "100%",
                 dropdownParent: $('.lib-modal')
-            }); 
+            });
             if ($.fn.dataTable.isDataTable('#table_tbl_masterlst')) {
                 $('#table_tbl_masterlst').DataTable();
             } else {
